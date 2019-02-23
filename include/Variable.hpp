@@ -13,6 +13,7 @@ public:
     virtual ~Variable(){}
 
     virtual void loadVariable() = 0;
+    virtual void print() = 0;
 };
 
 using VariablePointer = shared_ptr<Variable>;
@@ -23,6 +24,7 @@ public:
     ~SimpleVariable() = default;
 
     void loadVariable();
+    virtual void print();
 
 private:
     std::string identifier;
@@ -34,6 +36,7 @@ public:
     ~ConstVariable() = default;
 
     void loadVariable();
+    virtual void print();
 
 private:
     long long value;
@@ -45,6 +48,7 @@ public:
     ~ConstArrayVariable () = default;
 
     void loadVariable();
+    virtual void print();
 
 private:
     std::string identifier;
@@ -57,6 +61,7 @@ public:
     ~IdentifierArrayVariable () = default;
 
     void loadVariable();
+    virtual void print();
 
 private:
     std::string identifier;

@@ -5,15 +5,11 @@
 DECLARE
 	a; b; c;
 IN
-	READ a;
-	READ b;
-	c := a / a;
-	WRITE c;
-	c := a / b;
-	WRITE c;
-	c := a % a;
-	WRITE c;
-	c := a % b;
-	WRITE c;
+	c := a + c ;
+	tab(10) := array(a) % w;
+
+	IF g != tab(p) THEN
+		READ a;
+	ENDIF
 END
 

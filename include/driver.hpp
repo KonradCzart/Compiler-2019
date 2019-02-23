@@ -7,6 +7,8 @@
 
 #include "scanner.hpp"
 #include "parser.tab.hh"
+#include "Variable.hpp"
+#include "MemoryTable.hpp"
 
 namespace Compiler{
 

@@ -10,6 +10,11 @@
       class CompilerDriver;
       class Scanner;
    }
+
+   #include "Variable.hpp"
+   #include "MemoryTable.hpp"
+   #include "Expression.hpp"
+   #include "Condition.hpp"
 }
 
 %parse-param { Scanner  &scanner  }
@@ -19,8 +24,13 @@
    #include <iostream>
    #include <cstdlib>
    #include <fstream>
+   #include <memory>
 
    #include "driver.hpp"
+   #include "Variable.hpp"
+   #include "MemoryTable.hpp"
+   #include "Expression.hpp"
+   #include "Condition.hpp"
 
 #undef yylex
 #define yylex scanner.yylex
@@ -29,6 +39,10 @@
 %define api.value.type variant
 %define parse.assert
 
+%type <VariablePointer> identifier
+%type <VariablePointer> value
+%type <Expression> expression
+%type <Condition> condition
 %token <std::string>  NUM
 %token <std::string>  PIDENTIFIER
 
@@ -66,10 +80,18 @@ commands
    ;
 
 command
-   : identifier ASSIGN expression SEMICOLON
-   | IF condition THEN commands ELSE commands ENDIF
-   | IF condition THEN commands ENDIF
-   | WHILE condition DO commands ENDWHILE
+   : identifier ASSIGN expression SEMICOLON {
+         $3.print();
+      }
+   | IF condition THEN commands ELSE commands ENDIF {
+
+      }
+   | IF condition THEN commands ENDIF{
+         $2.print();
+      }
+   | WHILE condition DO commands ENDWHILE{
+
+      }
    | DO commands WHILE condition ENDDO
    | FOR PIDENTIFIER FROM value TO value DO commands ENDFOR
    | FOR PIDENTIFIER FROM value DOWNTO value DO commands ENDFOR
@@ -78,32 +100,43 @@ command
    ;
 
 expression
-   : value {  }
-   | value ADD value {  }
-   | value SUB value {  }
-   | value MUL value {  }
-   | value DIV value {  }
-   | value MOD value {  }
+   : value { $$ = Expression(Expression::Type::EMPTY, $1, $1); }
+   | value ADD value { $$ = Expression(Expression::Type::ADDITION, $1, $3);}
+   | value SUB value { $$ = Expression(Expression::Type::SUBTRACTION, $1, $3); }
+   | value MUL value { $$ = Expression(Expression::Type::MULTIPLICATION, $1, $3); }
+   | value DIV value { $$ = Expression(Expression::Type::DIVISION, $1, $3); }
+   | value MOD value { $$ = Expression(Expression::Type::MODULO, $1, $3); }
    ;
 
 condition
-   : value EQUAL value  {  }
-   | value NEQUAL value {  }
-   | value LESS value   {  }
-   | value GREAT value  {  }
-   | value LESSEQ value  {  }
-   | value GREATEQ value {  }
+   : value EQUAL value  { $$ = Condition(Condition::Type::EQUAL, $1, $3); }
+   | value NEQUAL value { $$ = Condition(Condition::Type::NOT_EQUAL, $1, $3); }
+   | value LESS value   { $$ = Condition(Condition::Type::LESSER, $1, $3); }
+   | value GREAT value  { $$ = Condition(Condition::Type::GREATER, $1, $3); }
+   | value LESSEQ value  { $$ = Condition(Condition::Type::LESSER_EQUAL, $1, $3); }
+   | value GREATEQ value { $$ = Condition(Condition::Type::GREATER_EQUAL, $1, $3); }
    ;
 
 value
-   : NUM { std::cout << $1;  }
-   | identifier {  }
+   : NUM { 
+         long long value = stoll($1);
+         $$ = std::make_shared<ConstVariable>(value);
+     }
+   | identifier { $$ = $1; }
    ;
 
 identifier
-   : PIDENTIFIER {  }
-   | PIDENTIFIER LBR PIDENTIFIER RBR  {  }
-   | PIDENTIFIER LBR NUM RBR {  }
+   : PIDENTIFIER { 
+         $$ = std::make_shared<SimpleVariable>($1); 
+      }
+   | PIDENTIFIER LBR PIDENTIFIER RBR  {
+         VariablePointer var = std::make_shared<SimpleVariable>($3); 
+         $$ = std::make_shared<IdentifierArrayVariable>($1, var); 
+      }
+   | PIDENTIFIER LBR NUM RBR {  
+         long long index = stoll($3);
+         $$ = std::make_shared<ConstArrayVariable>($1, index); 
+      }
    ;
 
 %%

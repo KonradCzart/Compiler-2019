@@ -22,9 +22,6 @@ subsystem:
 $(BIN)/$(EXECUTABLE): $(PARSER)/lex.yy.cc $(PARSER)/parser.tab.cc $(SRC)/*
 	$(CC) $(C_FLAGS) -I $(INCLUDE) -I $(PARSER) $^ -o $@ $(LIBRARIES)
 
-test: $(SRC)/test.cpp $(SRC)/MemoryTable.cpp $(SRC)/Variable.cpp
-	$(CC) $(C_FLAGS) -I $(INCLUDE) $^ -o $@ $(LIBRARIES)
-
 clean:
 	$(RM) $(BIN)/$(EXECUTABLE)
 	$(RM) $(PARSER)/*.hh
