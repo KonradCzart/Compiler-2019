@@ -1,5 +1,7 @@
 #include <iostream>
 #include "Variable.hpp"
+#include <sstream>
+
 
 SimpleVariable::SimpleVariable(std::string identifier){
     this->identifier = identifier;
@@ -9,8 +11,8 @@ void SimpleVariable::loadVariable(){
     std::cout << "Zwykła zmienna: " << identifier << std::endl;
 }
 
-void SimpleVariable::print(){
-    std::cout << identifier;
+std::string SimpleVariable::print(){
+    return identifier;
 }
 
 ConstVariable::ConstVariable(long long value){
@@ -21,9 +23,12 @@ void ConstVariable::loadVariable(){
     std::cout << "Stała: " << value << std::endl;
 }
 
-void ConstVariable::print(){
-    std::cout << value;
+std::string ConstVariable::print(){
+    std::stringstream tmp;
+    tmp << value;
+    return tmp.str();
 }
+
 
 ConstArrayVariable::ConstArrayVariable (std::string identifier, long long arrayIndex){
     this->identifier = identifier;
@@ -34,8 +39,10 @@ void ConstArrayVariable::loadVariable(){
     std::cout << "Tablica: " << identifier << " index " << arrayIndex << std::endl;
 }
 
-void ConstArrayVariable::print(){
-    std::cout << identifier << "(" << arrayIndex << ")";
+std::string ConstArrayVariable::print(){
+    std::stringstream tmp;
+    tmp << arrayIndex;
+    return identifier + "[" + tmp.str() + "]";
 }
 
 IdentifierArrayVariable::IdentifierArrayVariable (std::string identifier, VariablePointer arrayVariableIndex){
@@ -48,10 +55,8 @@ void IdentifierArrayVariable::loadVariable(){
     arrayVariableIndex->loadVariable();
 }
 
-void IdentifierArrayVariable::print(){
-    std::cout << identifier << "(";
-    arrayVariableIndex->print();
-    std::cout << ')';
+std::string IdentifierArrayVariable::print(){
+    return identifier + "[" + arrayVariableIndex->print() + "]";
 }
 
 

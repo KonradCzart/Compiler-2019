@@ -36,9 +36,7 @@ void Condition::print(){
             break;
     }
 
-    leftVariable -> print();
-    std::cout << symbolType;
-    rightVariable -> print();
-    std::cout << std::endl;
+    symbolType = leftVariable -> print() + symbolType + rightVariable -> print();
+    std::cout << symbolType << std::endl;
 
 }

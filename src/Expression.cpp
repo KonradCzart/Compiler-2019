@@ -25,27 +25,25 @@ void Expression::print(){
     std::string symbolType = " ";
     switch (type) {
         case ADDITION:
-            symbolType =  " add ";
+            symbolType =  "ADD ";
             break;
         case MULTIPLICATION:
-            symbolType =  " mul ";
+            symbolType =  "MUL ";
             break;
         case SUBTRACTION:
-            symbolType =  " sub ";
+            symbolType =  "SUB ";
             break;
         case DIVISION:
-            symbolType =  " div ";
+            symbolType =  "DIV ";
             break;
         case MODULO:
-            symbolType =  " mod ";
+            symbolType =  "MOD ";
             break;
         case EMPTY:
-            symbolType =  " mod ";
+            symbolType =  "";
             break;
     }
 
-    leftVariable -> print();
-    std::cout << symbolType;
-    rightVariable -> print();
-    std::cout << std::endl;
+    symbolType = symbolType + leftVariable -> print() + " " + rightVariable -> print();
+    std::cout << symbolType << std::endl;
 }
