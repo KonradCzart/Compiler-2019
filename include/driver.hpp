@@ -9,13 +9,16 @@
 #include "parser.tab.hh"
 #include "Variable.hpp"
 #include "MemoryTable.hpp"
+#include "CommandMenager.hpp"
 
 namespace Compiler{
 
 class CompilerDriver{
 public:
    CompilerDriver() = default;
-
+   friend class Parser;
+   friend class Scanner;
+   bool compiled = false;
    virtual ~CompilerDriver();
 
    void parse( const char * const filename );
@@ -27,6 +30,7 @@ private:
 
    Compiler::Parser  *parser  = nullptr;
    Compiler::Scanner *scanner = nullptr;
+   CommandMenager commandMenager;
 };
 
 }

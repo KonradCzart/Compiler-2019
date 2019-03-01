@@ -14,8 +14,8 @@ Condition::Condition(Condition::Type type, VariablePointer leftVariable, Variabl
 CommandBlock Condition::createCommandBlock(std::string labelJump){
     CommandBlock block;
     VariablePointer tmpVariable = make_shared<TmpVariable>();
-    std::string labelHelp1 = "HELP1_" + labelJump;
-    std::string labelHelp2 = "HELP2_" + labelJump;
+    std::string labelHelp1 = labelJump + "_HELP1";
+    std::string labelHelp2 = labelJump + "_HELP2";
 
     switch (type){
         case EQUAL:

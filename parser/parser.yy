@@ -95,16 +95,16 @@ command
          $$ = CommandBlock(Command($3.createCommand($1)));
       }
    | IF condition THEN commands ELSE commands ENDIF {
-
+         $$ = driver.commandMenager.getCommandIfElse($2, $4, $6);
       }
    | IF condition THEN commands ENDIF {
-         $2.print();
+         $$ = driver.commandMenager.getCommandIf($2,$4);
       }
    | WHILE condition DO commands ENDWHILE {
-
+         $$ = driver.commandMenager.getCommandWhileDo($2,$4);
       }
    | DO commands WHILE condition ENDDO {
-
+         $$ = driver.commandMenager.getCommandDoWhile($4,$2);
       }
    | FOR PIDENTIFIER FROM value TO value DO commands ENDFOR {
 
@@ -113,12 +113,10 @@ command
 
       }
    | READ identifier SEMICOLON {
-         CommandStrategyPointer strategy = std::make_shared<IOCommandStrategy>(IOCommandStrategy::READ, $2);
-         $$ = CommandBlock(Command(strategy));
+         $$ = CommandBlock(Command(IOCommandStrategy::create(IOCommandStrategy::Type::READ, $2)));
       }
    | WRITE value SEMICOLON {
-         CommandStrategyPointer strategy = std::make_shared<IOCommandStrategy>(IOCommandStrategy::WRITE, $2);
-         $$ = CommandBlock(Command(strategy));
+         $$ = CommandBlock(Command(IOCommandStrategy::create(IOCommandStrategy::Type::WRITE, $2)));
       }
    ;
 

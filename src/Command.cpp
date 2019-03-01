@@ -44,6 +44,11 @@ void CommandBlock::append(CommandBlock& block){
     commands.insert(commands.end(), innerCommands.begin(), innerCommands.end());
 }
 
+void CommandBlock::appendToBegin(CommandBlock& block){
+    auto innerCommands = block.getCommands();
+    commands.insert(commands.begin(), innerCommands.begin(), innerCommands.end());
+}
+
 std::vector<Command> CommandBlock::getCommands(){
     return commands;
 }

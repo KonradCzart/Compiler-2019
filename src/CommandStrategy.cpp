@@ -52,15 +52,15 @@ JumpConditionCommandStrategy::JumpConditionCommandStrategy(Type type, VariablePo
 }
 
 CommandStrategyPointer JumpConditionCommandStrategy::create(Type type, VariablePointer conditionVariable, std::string label){
-    return make_shared<JumpConditionCommandStrategy>(type, label, conditionVariable);
+    return make_shared<JumpConditionCommandStrategy>(type, conditionVariable, label);
 }
 
 void JumpConditionCommandStrategy::generate(){
     if(type == Type::JODD){
-        std::cout << "JODD " + conditionVariable -> print() << std::endl;
+        std::cout << "JODD " + conditionVariable -> print() + " " + label << std::endl;
     }
     else if(type == Type::JZERO){
-        std::cout << "JZERO " + conditionVariable -> print() << std::endl;
+        std::cout << "JZERO " + conditionVariable -> print() + " " + label << std::endl;
     }
 }
 
@@ -96,7 +96,7 @@ void CodeCommandStrategy::generate(){
         std::cout << "HALT " + label << std::endl;
     }
     else if(type == Type::NEW_BLOCK){
-        std::cout << "NEW_BLOCK " + label << std::endl;
+       //std::cout << "NEW_BLOCK " + label << std::endl;
     }
 }
 

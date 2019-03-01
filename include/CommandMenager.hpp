@@ -15,7 +15,8 @@ private:
 
 public:
    LabelMenager();
-   ~LabelMenager();
+   ~LabelMenager() = default;
+
    std::string getNextLabel(std::string infix);
    std::string getLabel(std::string label, std::string suffix);
 
@@ -23,16 +24,19 @@ public:
 
 
 class CommandMenager{
+public:
+   CommandMenager() = default;
+   ~CommandMenager() = default;
+
+   CommandBlock getCommandIf(Condition condition, CommandBlock& ifBlock);
+   CommandBlock getCommandIfElse(Condition condition, CommandBlock& trueBlock, CommandBlock& falseBlock);
+   CommandBlock getCommandWhileDo(Condition condition, CommandBlock& whileBlock);
+   CommandBlock getCommandDoWhile(Condition condition, CommandBlock& whileBlock);
+   CommandBlock getCommandFor(VariablePointer iterator, VariablePointer fromVariablePointer, VariablePointer endVariablePointer, CommandBlock forBlock);
+   CommandBlock getCommandForDown(VariablePointer iterator, VariablePointer fromVariablePointer, VariablePointer endVariablePointer, CommandBlock forBlock);
+
 private:
    LabelMenager labelMenager;
-   std::vector<Command> getConditionCommand(Condition condition, std::string labelJump, std::string labelHelp1, std::string labelHelp2);
-public:
-   std::vector<Command> getCommandIf(Condition condition, std::vector<Command> commands);
-   std::vector<Command> getCommandIfElse(Condition condition, std::vector<Command> commandsTrue, std::vector<Command> commandsFalse);
-   std::vector<Command> getCommandWhileDo(Condition condition, std::vector<Command> commands);
-   std::vector<Command> getCommandDoWhile(Condition condition, std::vector<Command> commands);
-   std::vector<Command> getCommandFor(Variable iterator, Variable fromVariable, Variable endVariable, std::vector<Command> commands);
-   std::vector<Command> getCommandForDown(Variable iterator, Variable fromVariable, Variable endVariable, std::vector<Command> commands);
 };
 
 #endif

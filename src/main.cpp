@@ -41,14 +41,4 @@ void test(){
    VariablePointer var2 = std::make_shared<ConstVariable>(50); 
    VariablePointer result = std::make_shared<SimpleVariable>("result"); 
 
-   CommandStrategyPointer gen = std::make_shared<AdditionCommandStrategy>(result, var, var2);
-   Command comm(gen);
-   gen = std::make_shared<SimpleCommandStrategy>(SimpleCommandStrategy::Type::LABEL, "aaa");
-   Command comm2(gen);
-      gen = std::make_shared<SimpleCommandStrategy>(SimpleCommandStrategy::Type::HALT, "aadda");
-   Command comm3(gen);
-      gen = std::make_shared<SimpleCommandStrategy>(SimpleCommandStrategy::Type::NEW_BLOCK, "aadsa");
-   Command comm4(AssignCommandStrategy::create(result, var));
-
-   comm4.generate();
 }

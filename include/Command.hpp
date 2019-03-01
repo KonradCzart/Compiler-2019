@@ -26,6 +26,7 @@ public:
     void addCommandToBegin(Command command);
     void addVectorCommands(std::vector<Command>& appendCommands);
     void append(CommandBlock& block);
+    void appendToBegin(CommandBlock& block);
     std::vector<Command> getCommands();
 
     void print();
