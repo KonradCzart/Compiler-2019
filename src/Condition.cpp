@@ -10,6 +10,36 @@ Condition::Condition(Condition::Type type, VariablePointer leftVariable, Variabl
     this->rightVariable = rightVariable;
 }
 
+CommandBlock Condition::createCommandBlock(std::string labelJump){
+    CommandBlock block;
+
+    switch (type){
+        case EQUAL:
+
+            break;
+        case NOT_EQUAL:
+
+            break;
+        case GREATER:
+
+            break;
+        case LESSER:
+
+            break;
+        case GREATER_EQUAL:
+
+            break;
+        case LESSER_EQUAL:
+
+            break;
+        default:
+
+            break;
+    }
+
+    return block;    
+}
+
 void Condition::print(){
     std::string symbolType;
     switch (type) {

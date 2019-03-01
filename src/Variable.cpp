@@ -59,4 +59,12 @@ std::string IdentifierArrayVariable::print(){
     return identifier + "[" + arrayVariableIndex->print() + "]";
 }
 
+void TmpVariable::loadVariable(){
+    std::cout << "Tmp: załadowano";
+}
+
+std::string TmpVariable::print(){
+    return "Tmp";
+}
+
 

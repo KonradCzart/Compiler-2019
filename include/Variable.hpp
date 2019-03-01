@@ -68,4 +68,13 @@ private:
     VariablePointer arrayVariableIndex;
 };
 
+class TmpVariable : public Variable{
+public:
+    TmpVariable () = default;
+    ~TmpVariable () = default;
+
+    void loadVariable();
+    std::string print();
+};
+
 #endif 
