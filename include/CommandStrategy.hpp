@@ -56,9 +56,9 @@ public:
         JODD,
         JZERO
     };
-    JumpConditionCommandStrategy(Type type, std::string label, VariablePointer conditionVariable);
+    JumpConditionCommandStrategy(Type type, VariablePointer conditionVariable, std::string label);
 
-    static CommandStrategyPointer create(Type type, std::string label, VariablePointer conditionVariable);
+    static CommandStrategyPointer create(Type type, VariablePointer conditionVariable, std::string label);
     void generate();
 
 private:
@@ -83,20 +83,30 @@ private:
     VariablePointer resultVariable;
 };
 
-class SimpleCommandStrategy : public CommandStrategy {
+class CodeCommandStrategy : public CommandStrategy {
 public:
     enum Type {
-        LABEL,
         HALT,
         NEW_BLOCK
     };
-    SimpleCommandStrategy(Type type, std::string label);
+    CodeCommandStrategy(Type type, std::string label);
 
     static CommandStrategyPointer create(Type type, std::string label);
     void generate();
 
 private:
     Type type;
+    std::string label;
+};
+
+class LabelCommandStrategy : public CommandStrategy {
+public:
+    LabelCommandStrategy(std::string label);
+
+    static CommandStrategyPointer create(std::string label);
+    void generate();
+
+private:
     std::string label;
 };
 

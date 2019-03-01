@@ -45,13 +45,13 @@ void JumpCommandStrategy::generate(){
     std::cout << "JUMP " + label << std::endl;
 }
 
-JumpConditionCommandStrategy::JumpConditionCommandStrategy(Type type, std::string label, VariablePointer conditionVariable){
+JumpConditionCommandStrategy::JumpConditionCommandStrategy(Type type, VariablePointer conditionVariable, std::string label){
     this->type = type;
     this->label = label;
     this->conditionVariable = conditionVariable;
 }
 
-CommandStrategyPointer JumpConditionCommandStrategy::create(Type type, std::string label, VariablePointer conditionVariable){
+CommandStrategyPointer JumpConditionCommandStrategy::create(Type type, VariablePointer conditionVariable, std::string label){
     return make_shared<JumpConditionCommandStrategy>(type, label, conditionVariable);
 }
 
@@ -82,24 +82,32 @@ void IncDecCommandStrategy::generate(){
     }
 }
 
-SimpleCommandStrategy::SimpleCommandStrategy(Type type, std::string label){
+CodeCommandStrategy::CodeCommandStrategy(Type type, std::string label){
     this->type = type;
     this->label = label;
 }
 
-CommandStrategyPointer SimpleCommandStrategy::create(Type type, std::string label){
-    return make_shared<SimpleCommandStrategy>(type, label);
+CommandStrategyPointer CodeCommandStrategy::create(Type type, std::string label){
+    return make_shared<CodeCommandStrategy>(type, label);
 }
 
-void SimpleCommandStrategy::generate(){
+void CodeCommandStrategy::generate(){
     if(type == Type::HALT){
         std::cout << "HALT " + label << std::endl;
     }
     else if(type == Type::NEW_BLOCK){
         std::cout << "NEW_BLOCK " + label << std::endl;
     }
-    else if(type == Type::LABEL){
-        std::cout << "LABEL " + label << std::endl;
-    }
 }
 
+LabelCommandStrategy::LabelCommandStrategy(std::string label){
+    this->label = label;
+}
+
+CommandStrategyPointer LabelCommandStrategy::create(std::string label){
+    return make_shared<LabelCommandStrategy>(label);
+}
+
+void LabelCommandStrategy::generate(){
+    std::cout << "LABEL " + label << std::endl;
+}
