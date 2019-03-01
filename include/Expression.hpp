@@ -2,6 +2,7 @@
 #define __EXPRESSION_HH__
 
 #include "Variable.hpp"
+#include "Command.hpp"
 
 class Expression {
 public:
@@ -17,7 +18,7 @@ public:
     Expression();
     Expression(Type type, VariablePointer leftVariable, VariablePointer rightVariable);
 
-    void compile();
+    Command createCommand(VariablePointer resultVariable);
     VariablePointer getLeftVariable();
     VariablePointer getRightVariable();
     Type getType();

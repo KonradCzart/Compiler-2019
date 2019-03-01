@@ -11,5 +11,10 @@ IN
 	IF g != tab(p) THEN
 		READ a;
 	ENDIF
+
+	READ a;
+	READ b;
+	WRITE a;
+	WRITE c;
 END
 

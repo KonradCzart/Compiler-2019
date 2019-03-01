@@ -1,52 +1,27 @@
 #include "CommandStrategy.hpp"
 #include <iostream>
+#include <memory>
 
 AssignCommandStrategy::AssignCommandStrategy(VariablePointer resultVariable, VariablePointer assignVariable){
     this->resultVariable = resultVariable;
     this->assignVariable = assignVariable;
 }
 
+CommandStrategyPointer AssignCommandStrategy::create(VariablePointer resultVariable, VariablePointer assignVariable){
+    return make_shared<AssignCommandStrategy>(resultVariable, assignVariable);
+}
+
 void AssignCommandStrategy::generate(){
     std::cout << "ASSIGN: " + resultVariable->print() + " " + assignVariable->print() << std::endl;
-}
-
-MathCommandStrategy::MathCommandStrategy(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable){
-    this->resultVariable = resultVariable;
-    this->leftVariable = leftVariable;
-    this->rightVariable = rightVariable;
-}
-
-AdditionCommandStrategy::AdditionCommandStrategy(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable)
-    :MathCommandStrategy(resultVariable, leftVariable, rightVariable){ }
-
-void AdditionCommandStrategy::generate(){
-    std::cout << "ADD: " + resultVariable->print() + " " + leftVariable->print() + " " + rightVariable->print() << std::endl;
-}
-
-SubtractionCommandStrategy::SubtractionCommandStrategy(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable)
-    :MathCommandStrategy(resultVariable, leftVariable, rightVariable){ }
-
-void SubtractionCommandStrategy::generate(){
-    std::cout << "SUB: " + resultVariable->print() + " " + leftVariable->print() + " " + rightVariable->print() << std::endl;
-}
-
-MultiplicationCommandStrategy::MultiplicationCommandStrategy(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable)
-    :MathCommandStrategy(resultVariable, leftVariable, rightVariable){ }
-
-void MultiplicationCommandStrategy::generate(){
-    std::cout << "MUL: " + resultVariable->print() + " " + leftVariable->print() + " " + rightVariable->print() << std::endl;
-}
-
-ModuloCommandStrategy::ModuloCommandStrategy(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable)
-    :MathCommandStrategy(resultVariable, leftVariable, rightVariable){ }
-
-void ModuloCommandStrategy::generate(){
-    std::cout << "MOD: " + resultVariable->print() + " " + leftVariable->print() + " " + rightVariable->print() << std::endl;
 }
 
 IOCommandStrategy::IOCommandStrategy(Type type, VariablePointer resultVariable){
     this->resultVariable = resultVariable;
     this->type = type;
+}
+
+CommandStrategyPointer IOCommandStrategy::create(Type type, VariablePointer resultVariable){
+    return make_shared<IOCommandStrategy>(type, resultVariable);
 }
 
 void IOCommandStrategy::generate(){
@@ -62,6 +37,10 @@ JumpCommandStrategy::JumpCommandStrategy(std::string label){
     this->label = label;
 }
 
+CommandStrategyPointer JumpCommandStrategy::create(std::string label){
+    return make_shared<JumpCommandStrategy>(label);
+}
+
 void JumpCommandStrategy::generate(){
     std::cout << "JUMP " + label << std::endl;
 }
@@ -70,6 +49,10 @@ JumpConditionCommandStrategy::JumpConditionCommandStrategy(Type type, std::strin
     this->type = type;
     this->label = label;
     this->conditionVariable = conditionVariable;
+}
+
+CommandStrategyPointer JumpConditionCommandStrategy::create(Type type, std::string label, VariablePointer conditionVariable){
+    return make_shared<JumpConditionCommandStrategy>(type, label, conditionVariable);
 }
 
 void JumpConditionCommandStrategy::generate(){
@@ -86,6 +69,10 @@ IncDecCommandStrategy::IncDecCommandStrategy(Type type, VariablePointer resultVa
     this->resultVariable = resultVariable;
 }
 
+CommandStrategyPointer IncDecCommandStrategy::create(Type type, VariablePointer resultVariable){
+    return make_shared<IncDecCommandStrategy>(type, resultVariable);
+}
+
 void IncDecCommandStrategy::generate(){
     if(type == Type::INC){
         std::cout << "INC " + resultVariable -> print() << std::endl;
@@ -98,6 +85,10 @@ void IncDecCommandStrategy::generate(){
 SimpleCommandStrategy::SimpleCommandStrategy(Type type, std::string label){
     this->type = type;
     this->label = label;
+}
+
+CommandStrategyPointer SimpleCommandStrategy::create(Type type, std::string label){
+    return make_shared<SimpleCommandStrategy>(type, label);
 }
 
 void SimpleCommandStrategy::generate(){

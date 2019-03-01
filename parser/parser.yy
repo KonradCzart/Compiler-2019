@@ -15,6 +15,8 @@
    #include "MemoryTable.hpp"
    #include "Expression.hpp"
    #include "Condition.hpp"
+   #include "Command.hpp"
+   #include "CommandStrategy.hpp" 
 }
 
 %parse-param { Scanner  &scanner  }
@@ -31,6 +33,8 @@
    #include "MemoryTable.hpp"
    #include "Expression.hpp"
    #include "Condition.hpp"
+   #include "Command.hpp"
+   #include "CommandStrategy.hpp"
 
 #undef yylex
 #define yylex scanner.yylex
@@ -43,6 +47,8 @@
 %type <VariablePointer> value
 %type <Expression> expression
 %type <Condition> condition
+%type <CommandBlock> command
+%type <CommandBlock> commands
 %token <std::string>  NUM
 %token <std::string>  PIDENTIFIER
 
@@ -65,7 +71,7 @@
 
 start
    : /*empty*/
-   | DECLARE declarations IN commands END { std::cout<<"dasdasda";}
+   | DECLARE declarations IN commands END { std::cout<<"dasdasda" << std::endl; $4.print(); }
    ;
 
 declarations
@@ -75,28 +81,45 @@ declarations
    ;
 
 commands
-   : commands command
-   | command
+   : commands command { 
+         $1.append($2);
+         $$ = $1;
+      }
+   | command { 
+         $$ = $1; 
+      }
    ;
 
 command
    : identifier ASSIGN expression SEMICOLON {
-         $3.print();
+         $$ = CommandBlock(Command($3.createCommand($1)));
       }
    | IF condition THEN commands ELSE commands ENDIF {
 
       }
-   | IF condition THEN commands ENDIF{
+   | IF condition THEN commands ENDIF {
          $2.print();
       }
-   | WHILE condition DO commands ENDWHILE{
+   | WHILE condition DO commands ENDWHILE {
 
       }
-   | DO commands WHILE condition ENDDO
-   | FOR PIDENTIFIER FROM value TO value DO commands ENDFOR
-   | FOR PIDENTIFIER FROM value DOWNTO value DO commands ENDFOR
-   | READ identifier SEMICOLON
-   | WRITE value SEMICOLON
+   | DO commands WHILE condition ENDDO {
+
+      }
+   | FOR PIDENTIFIER FROM value TO value DO commands ENDFOR {
+
+      }
+   | FOR PIDENTIFIER FROM value DOWNTO value DO commands ENDFOR {
+
+      }
+   | READ identifier SEMICOLON {
+         CommandStrategyPointer strategy = std::make_shared<IOCommandStrategy>(IOCommandStrategy::READ, $2);
+         $$ = CommandBlock(Command(strategy));
+      }
+   | WRITE value SEMICOLON {
+         CommandStrategyPointer strategy = std::make_shared<IOCommandStrategy>(IOCommandStrategy::WRITE, $2);
+         $$ = CommandBlock(Command(strategy));
+      }
    ;
 
 expression

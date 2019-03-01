@@ -6,12 +6,26 @@
 #include "Command.hpp"
 #include "Variable.hpp"
 #include "CommandStrategy.hpp"
+#include "MathCommandStrategy.hpp"
 
+#include <vector>
 void test();
+
+
 
 int
 main( const int argc, const char **argv )
 {
+   std::vector<int> a;
+   a.push_back(51);
+   a.push_back(48);
+
+   std::vector<int> b = a;
+   a.push_back(10);
+      for (int i=0; i<b.size(); i++) 
+       cout << b[i] << " "; 
+
+
    Compiler::CompilerDriver driver;
    driver.parse( argv[1] );
    driver.print( std::cout ) << "\n";
@@ -34,12 +48,7 @@ void test(){
       gen = std::make_shared<SimpleCommandStrategy>(SimpleCommandStrategy::Type::HALT, "aadda");
    Command comm3(gen);
       gen = std::make_shared<SimpleCommandStrategy>(SimpleCommandStrategy::Type::NEW_BLOCK, "aadsa");
-   Command comm4(gen);
-   comm.generate();
-   comm2.generate();
+   Command comm4(AssignCommandStrategy::create(result, var));
 
-   comm3.generate();
    comm4.generate();
-
-
 }
