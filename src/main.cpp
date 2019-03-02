@@ -39,6 +39,15 @@ main( const int argc, const char **argv )
 void test(){
    VariablePointer var = std::make_shared<SimpleVariable>("abc");
    VariablePointer var2 = std::make_shared<ConstVariable>(50); 
-   VariablePointer result = std::make_shared<SimpleVariable>("result"); 
+   VariablePointer result = std::make_shared<SimpleVariable>("abc"); 
+
+   VariablePointer varG = var;
+
+   if(varG == var){
+      std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa";
+   }
+   if(Variable::compere(var, result)){
+      std::cout << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+   }
 
 }

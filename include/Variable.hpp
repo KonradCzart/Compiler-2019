@@ -14,6 +14,8 @@ public:
 
     virtual void loadVariable() = 0;
     virtual std::string print() = 0;
+
+    static bool compere(shared_ptr<Variable> leftVariable, shared_ptr<Variable> rightVariable);
 };
 
 using VariablePointer = shared_ptr<Variable>;

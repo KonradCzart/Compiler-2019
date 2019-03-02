@@ -2,6 +2,12 @@
 #include "Variable.hpp"
 #include <sstream>
 
+bool Variable::compere(VariablePointer leftVariable, VariablePointer rightVariable){
+    if(leftVariable->print() == rightVariable->print()){
+        return true;
+    }
+    return false;
+}
 
 SimpleVariable::SimpleVariable(std::string identifier){
     this->identifier = identifier;
