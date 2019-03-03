@@ -1,6 +1,10 @@
 #include <iostream>
 #include "Variable.hpp"
 #include <sstream>
+#include "RegisterMenager.hpp"
+#include "AssemblerMenager.hpp"
+#include "AssemblerCommand.hpp"
+#include "MemoryTable.hpp"
 
 bool Variable::compere(VariablePointer leftVariable, VariablePointer rightVariable){
     if(leftVariable->print() == rightVariable->print()){
@@ -21,6 +25,21 @@ std::string SimpleVariable::print(){
     return identifier;
 }
 
+RegisterPointer SimpleVariable::loadVariable(AssemblerMenager& assemblerMenager){
+    std::vector<AssemblerCommand> loadCommands;
+    RegisterPointer loadRegister = assemblerMenager.getFreeRegister();
+    MemoryTable* memory = MemoryTable::getInstance();
+    long long memoryAddress = memory -> getAddress(identifier);
+
+    loadCommands = assemblerMenager.generateAddress(memoryAddress);
+    loadCommands.push_back(AssemblerCommand(AssemblerInstruction::Load, loadRegister->getType()));
+    assemblerMenager.insertAssemblerCommand(loadCommands);
+
+    memory = nullptr;    
+    return loadRegister;
+}
+
+
 ConstVariable::ConstVariable(long long value){
     this->value = value;
 }
@@ -34,6 +53,17 @@ std::string ConstVariable::print(){
     tmp << value;
     return tmp.str();
 }
+
+RegisterPointer ConstVariable::loadVariable(AssemblerMenager& assemblerMenager){
+    std::vector<AssemblerCommand> loadCommands;
+    RegisterPointer loadRegister = assemblerMenager.getFreeRegister();
+    
+    loadCommands = assemblerMenager.generateNumberInRegister(loadRegister->getType(), value);
+    assemblerMenager.insertAssemblerCommand(loadCommands);
+
+    return loadRegister;
+}
+
 
 
 ConstArrayVariable::ConstArrayVariable (std::string identifier, long long arrayIndex){
@@ -51,6 +81,25 @@ std::string ConstArrayVariable::print(){
     return identifier + "[" + tmp.str() + "]";
 }
 
+RegisterPointer ConstArrayVariable::loadVariable(AssemblerMenager& assemblerMenager){
+    std::vector<AssemblerCommand> loadCommands;
+    RegisterPointer loadRegister = assemblerMenager.getFreeRegister();
+    MemoryTable* memory = MemoryTable::getInstance();
+    long long memoryAddress = memory -> getAddress(identifier);
+    long long firstArrayIndex = memory -> getFirstArrayIndex(identifier);
+
+    memoryAddress = memoryAddress + arrayIndex - firstArrayIndex;
+    loadCommands = assemblerMenager.generateAddress(memoryAddress);
+    loadCommands.push_back(AssemblerCommand(AssemblerInstruction::Load, loadRegister->getType()));
+    assemblerMenager.insertAssemblerCommand(loadCommands);
+
+    memory = nullptr;    
+    return loadRegister;
+}
+
+
+
+
 IdentifierArrayVariable::IdentifierArrayVariable (std::string identifier, VariablePointer arrayVariableIndex){
     this->identifier = identifier;
     this->arrayVariableIndex = arrayVariableIndex;
@@ -65,12 +114,45 @@ std::string IdentifierArrayVariable::print(){
     return identifier + "[" + arrayVariableIndex->print() + "]";
 }
 
+RegisterPointer IdentifierArrayVariable::loadVariable(AssemblerMenager& assemblerMenager){
+    std::vector<AssemblerCommand> loadCommands;
+    MemoryTable* memory = MemoryTable::getInstance();
+    long long memoryAddress = memory -> getAddress(identifier);
+    long long firstArrayIndex = memory -> getFirstArrayIndex(identifier);
+    RegisterPointer loadRegister = assemblerMenager.getFreeRegister();
+    RegisterPointer indexRegister = assemblerMenager.getRegisterForVariable(arrayVariableIndex);
+    RegisterPointer firstIndexRegister = assemblerMenager.getRegisterForVariable(make_shared<ConstVariable>(firstArrayIndex));
+    AddressRegisterPointer addressRegister = assemblerMenager.getAddressRegister();
+
+    loadCommands = assemblerMenager.generateAddress(memoryAddress);
+    loadCommands.push_back(AssemblerCommand(AssemblerInstruction::Add, addressRegister->getType(), indexRegister->getType()));
+    loadCommands.push_back(AssemblerCommand(AssemblerInstruction::Sub, addressRegister->getType(), firstIndexRegister->getType()));
+    loadCommands.push_back(AssemblerCommand(AssemblerInstruction::Load, loadRegister->getType()));
+    assemblerMenager.insertAssemblerCommand(loadCommands);
+
+    addressRegister -> setValue(addressRegister -> UNKNOW_VALUE);
+    memory = nullptr;    
+    return loadRegister;
+}
+
+
+
 void TmpVariable::loadVariable(){
     std::cout << "Tmp: załadowano";
 }
 
 std::string TmpVariable::print(){
-    return "Tmp";
+    std::string tmp = "TMP";
+    return tmp;
+}
+
+RegisterPointer TmpVariable::loadVariable(AssemblerMenager& assemblerMenager){
+    std::vector<AssemblerCommand> loadCommands;
+    RegisterPointer loadRegister = assemblerMenager.getFreeRegister();
+
+    loadCommands.push_back(AssemblerCommand(AssemblerInstruction::Sub, loadRegister->getType(), loadRegister->getType()));
+
+    return loadRegister;
 }
 
 

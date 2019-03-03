@@ -1,15 +1,19 @@
 #include "RegisterMenager.hpp"
+#include <iostream>
 
 Register::Register (){
     tmpVariable = make_shared<TmpVariable>();
     type = RegisterType::A;
     used = false;
-    variable = tmpVariable;
     usedTime = 0;
+    variable = tmpVariable;
 }
 
 Register::Register (RegisterType type){
-    Register();
+    tmpVariable = make_shared<TmpVariable>();
+    used = false;
+    usedTime = 0;
+    variable = tmpVariable;
     this->type = type;
 }
 
@@ -57,7 +61,8 @@ void Register::incrementUsedTime(){
 }
 
 void Register::printRegister(){
-    std::cout << type << "   " << usedTime << "   " << variable << std::endl;
+
+    std::cout << type << "   " << usedTime << "   " << variable->print() << std::endl;
 }
 
 AddressRegister::AddressRegister (){
@@ -137,10 +142,15 @@ RegisterPointer RegisterMenager::getLastUsedRegister(){
     return tmp;
 }
 
+AddressRegisterPointer RegisterMenager::getAddressRegister(){
+    return addressRegister;
+}
+
 void RegisterMenager::printRegisterAll(){
     addressRegister -> printRegister();
     for(auto elem : registerList){
         RegisterPointer r = elem;
         r -> printRegister();
     }
+    xTypeRegister -> printRegister();
 }

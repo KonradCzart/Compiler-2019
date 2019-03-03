@@ -76,6 +76,7 @@ public:
     RegisterPointer variableInRegister(VariablePointer variable);
     RegisterPointer getFreeRegister();
     RegisterPointer getLastUsedRegister();
+    AddressRegisterPointer getAddressRegister();
 
     //debug
     void printRegisterAll();

@@ -86,6 +86,21 @@ std::string MemoryTable::popIterator(){
   return identifier;
 }
 
+long long MemoryTable::getAddress(std::string identifier){
+  if(isAlreadyDeclared(identifier)){
+    return declaredSymbols[identifier].memoryAddress;
+  }
+  return 0;
+}
+
+long long MemoryTable::getFirstArrayIndex(std::string identifier){
+   if(isAlreadyDeclared(identifier)){
+    return declaredSymbols[identifier].firstArrayIndex;
+  }
+  return 0; 
+}
+
+
 void MemoryTable::printAllMemory(){
   for(auto elem : declaredSymbols){
     MemorySymbol symbol = elem.second;

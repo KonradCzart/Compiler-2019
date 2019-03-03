@@ -30,6 +30,9 @@ public:
     std::string popIterator();
     bool iteratorOnStack(std::string identifier);
 
+    long long getAddress(std::string identifier);
+    long long getFirstArrayIndex(std::string identifier);
+
     void printAllMemory();
 
 protected:

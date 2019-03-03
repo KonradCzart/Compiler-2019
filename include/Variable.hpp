@@ -6,6 +6,9 @@
 
 
 using  namespace std;
+class AssemblerMenager;
+class Register;
+using RegisterPointer = shared_ptr<Register>;
 
 class Variable {
 public:
@@ -15,10 +18,12 @@ public:
     virtual void loadVariable() = 0;
     virtual std::string print() = 0;
 
-    static bool compere(shared_ptr<Variable> leftVariable, shared_ptr<Variable> rightVariable);
+    virtual RegisterPointer loadVariable(AssemblerMenager& assemblerMenager) = 0;
+
+    static bool compere(std::shared_ptr<Variable> leftVariable, std::shared_ptr<Variable> rightVariable);
 };
 
-using VariablePointer = shared_ptr<Variable>;
+using VariablePointer = std::shared_ptr<Variable>;
 
 class SimpleVariable : public Variable{
 public:
@@ -27,6 +32,8 @@ public:
 
     void loadVariable();
     std::string print();
+
+    RegisterPointer loadVariable(AssemblerMenager& assemblerMenager);
 
 private:
     std::string identifier;
@@ -40,6 +47,8 @@ public:
     void loadVariable();
     std::string print();
 
+    RegisterPointer loadVariable(AssemblerMenager& assemblerMenager);
+
 private:
     long long value;
 };
@@ -51,6 +60,8 @@ public:
 
     void loadVariable();
     std::string print();
+
+    RegisterPointer loadVariable(AssemblerMenager& assemblerMenager);
 
 private:
     std::string identifier;
@@ -65,6 +76,8 @@ public:
     void loadVariable();
     std::string print();
 
+    RegisterPointer loadVariable(AssemblerMenager& assemblerMenager);
+
 private:
     std::string identifier;
     VariablePointer arrayVariableIndex;
@@ -77,6 +90,8 @@ public:
 
     void loadVariable();
     std::string print();
+
+    RegisterPointer loadVariable(AssemblerMenager& assemblerMenager);
 };
 
 #endif 
