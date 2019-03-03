@@ -1,7 +1,7 @@
 #include "RegisterMenager.hpp"
 
 Register::Register (){
-    tmpVariable = make_shared<TmpVariable>("EMPTY");
+    tmpVariable = make_shared<TmpVariable>();
     type = RegisterType::A;
     used = false;
     variable = tmpVariable;
@@ -105,7 +105,6 @@ void RegisterMenager::stepUseTime(){
 }
 
 RegisterPointer RegisterMenager::variableInRegister(VariablePointer variable){
-    int i = 0;
     for(auto currentRegister : registerList){
         if(Variable::compere(variable, currentRegister -> getVariable())){
         currentRegister -> clearUsedTime();

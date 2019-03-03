@@ -7,6 +7,7 @@
 #include "Variable.hpp"
 #include "CommandStrategy.hpp"
 #include "MathCommandStrategy.hpp"
+#include "AssemblerCommand.hpp"
 
 #include <vector>
 void test();
@@ -43,11 +44,7 @@ void test(){
 
    VariablePointer varG = var;
 
-   if(varG == var){
-      std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa";
-   }
-   if(Variable::compere(var, result)){
-      std::cout << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-   }
+   AssemblerCommand abc (AssemblerInstruction::Add, RegisterType::B, RegisterType::C);
+   std::cout << abc;
 
 }
