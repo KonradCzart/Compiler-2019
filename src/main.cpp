@@ -54,11 +54,11 @@ void test(){
 
    AssemblerMenager menagerAsm;
    menagerAsm.startNewBlock();
-   auto reg2 = var2 -> loadVariable(menagerAsm);
+   auto reg2 = var2 -> loadVariable(&menagerAsm);
    reg2->setVariable(var2);
-   auto reg = var -> loadVariable(menagerAsm);
+   auto reg = var -> loadVariable(&menagerAsm);
    reg->setVariable(var);
-      auto reg4 = varTab -> loadVariable(menagerAsm);
+      auto reg4 = varTab -> loadVariable(&menagerAsm);
    reg4->setVariable(varTab);
 
    std::ofstream fout("wynik");

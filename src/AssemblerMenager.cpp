@@ -79,7 +79,7 @@ RegisterPointer AssemblerMenager::getRegisterForVariable(VariablePointer variabl
         //lastReadRegister = free;
         return free;
     }
-    //free = loadVaraibleToRegister(v);
+    free = variable->loadVariable(this);
     return free;
 }
 
