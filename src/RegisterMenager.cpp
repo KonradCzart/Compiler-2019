@@ -55,6 +55,13 @@ long long Register::getUsedTime(){
 void Register::clearUsedTime(){
     usedTime = 0;
 }
+
+void Register::clearRegister(){
+    used = false;
+    usedTime = 0;
+    store = false;
+    variable = tmpVariable;
+}
     
 void Register::incrementUsedTime(){
     usedTime++;

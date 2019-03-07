@@ -8,6 +8,7 @@
 using  namespace std;
 class AssemblerMenager;
 class Register;
+enum class AssemblerInstruction;
 using RegisterPointer = shared_ptr<Register>;
 
 class Variable {
@@ -19,6 +20,7 @@ public:
     virtual std::string print() = 0;
 
     virtual RegisterPointer loadVariable(AssemblerMenager& assemblerMenager) = 0;
+    virtual void storeVariable(AssemblerMenager& assemblerMenager, RegisterPointer saveRegister) = 0;
 
     static bool compere(std::shared_ptr<Variable> leftVariable, std::shared_ptr<Variable> rightVariable);
 };
@@ -34,9 +36,11 @@ public:
     std::string print();
 
     RegisterPointer loadVariable(AssemblerMenager& assemblerMenager);
+    void storeVariable(AssemblerMenager& assemblerMenager, RegisterPointer saveRegister);
 
 private:
     std::string identifier;
+    void helpGenerateCommand(AssemblerMenager& assemblerMenager, RegisterPointer currentRegister, AssemblerInstruction instruction);
 };
 
 class ConstVariable : public Variable{
@@ -48,6 +52,7 @@ public:
     std::string print();
 
     RegisterPointer loadVariable(AssemblerMenager& assemblerMenager);
+    void storeVariable(AssemblerMenager& assemblerMenager, RegisterPointer saveRegister);
 
 private:
     long long value;
@@ -62,10 +67,12 @@ public:
     std::string print();
 
     RegisterPointer loadVariable(AssemblerMenager& assemblerMenager);
+    void storeVariable(AssemblerMenager& assemblerMenager, RegisterPointer saveRegister);
 
 private:
     std::string identifier;
     long long arrayIndex;
+    void helpGenerateCommand(AssemblerMenager& assemblerMenager, RegisterPointer currentRegister, AssemblerInstruction instruction);
 };
 
 class IdentifierArrayVariable : public Variable{
@@ -77,10 +84,12 @@ public:
     std::string print();
 
     RegisterPointer loadVariable(AssemblerMenager& assemblerMenager);
+    void storeVariable(AssemblerMenager& assemblerMenager, RegisterPointer saveRegister);
 
 private:
     std::string identifier;
     VariablePointer arrayVariableIndex;
+    void helpGenerateCommand(AssemblerMenager& assemblerMenager, RegisterPointer currentRegister, AssemblerInstruction instruction);
 };
 
 class TmpVariable : public Variable{
@@ -92,6 +101,7 @@ public:
     std::string print();
 
     RegisterPointer loadVariable(AssemblerMenager& assemblerMenager);
+    void storeVariable(AssemblerMenager& assemblerMenager, RegisterPointer saveRegister);
 };
 
 #endif 

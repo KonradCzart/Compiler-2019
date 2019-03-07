@@ -36,6 +36,7 @@ public:
     void setUsed(bool used);
     long long getUsedTime();
     void clearUsedTime();
+    void clearRegister();
     void incrementUsedTime();
     void printRegister();
 private:
