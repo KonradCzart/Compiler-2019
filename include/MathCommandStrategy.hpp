@@ -9,6 +9,7 @@ public:
     MathCommandStrategy(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable);
 
     virtual void generate() = 0;
+    virtual void compile(AssemblerMenager* assemblerMenager) = 0;
 
 protected:
     VariablePointer resultVariable;
@@ -22,6 +23,7 @@ public:
 
     static CommandStrategyPointer create(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable);
     void generate();
+    void compile(AssemblerMenager* assemblerMenager);
 };
 
 class SubtractionCommandStrategy : public MathCommandStrategy {
@@ -30,6 +32,7 @@ public:
     
     static CommandStrategyPointer create(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable);
     void generate();
+    void compile(AssemblerMenager* assemblerMenager);
 };
 
 class MultiplicationCommandStrategy : public MathCommandStrategy {
@@ -38,6 +41,7 @@ public:
 
     static CommandStrategyPointer create(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable);
     void generate();
+    void compile(AssemblerMenager* assemblerMenager);
 };
 
 class DivisionCommandStrategy : public MathCommandStrategy {
@@ -46,6 +50,7 @@ public:
 
     static CommandStrategyPointer create(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable);
     void generate();
+    void compile(AssemblerMenager* assemblerMenager);
 };
 
 class ModuloCommandStrategy : public MathCommandStrategy {
@@ -54,6 +59,7 @@ public:
 
     static CommandStrategyPointer create(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable);
     void generate();
+    void compile(AssemblerMenager* assemblerMenager);
 };
 
 #endif 

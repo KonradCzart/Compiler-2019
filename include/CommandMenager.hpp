@@ -7,21 +7,7 @@
 #include "Command.hpp"
 #include "Condition.hpp"
 #include <vector>
-
-
-class LabelMenager{
-private:
-   long long labelIndex;
-
-public:
-   LabelMenager();
-   ~LabelMenager() = default;
-
-   std::string getNextLabel(std::string infix);
-   std::string getLabel(std::string label, std::string suffix);
-
-};
-
+#include "LabelMenager.hpp"
 
 class CommandMenager{
 public:

@@ -6,6 +6,7 @@
 class CommandStrategy {
 public:
     virtual void generate() = 0;
+    virtual void compile(AssemblerMenager* assemblerMenager) = 0;
 };
 
 using CommandStrategyPointer = shared_ptr<CommandStrategy>;
@@ -16,6 +17,7 @@ public:
 
     static CommandStrategyPointer create(VariablePointer resultVariable, VariablePointer assignVariable);
     void generate();
+    void compile(AssemblerMenager* assemblerMenager);
 
 private:
     VariablePointer resultVariable;
@@ -33,6 +35,7 @@ public:
 
     static CommandStrategyPointer create(Type type, VariablePointer resultVariable);
     void generate();
+    void compile(AssemblerMenager* assemblerMenager);
 
 private:
     Type type;
@@ -45,6 +48,7 @@ public:
 
     static CommandStrategyPointer create(std::string label);
     void generate();
+    void compile(AssemblerMenager* assemblerMenager);
 
 private:
     std::string label;
@@ -60,6 +64,7 @@ public:
 
     static CommandStrategyPointer create(Type type, VariablePointer conditionVariable, std::string label);
     void generate();
+    void compile(AssemblerMenager* assemblerMenager);
 
 private:
     Type type;
@@ -77,6 +82,7 @@ public:
 
     static CommandStrategyPointer create(Type type, VariablePointer resultVariable);
     void generate();
+    void compile(AssemblerMenager* assemblerMenager);
 
 private:
     Type type;
@@ -93,6 +99,7 @@ public:
 
     static CommandStrategyPointer create(Type type, std::string label);
     void generate();
+    void compile(AssemblerMenager* assemblerMenager);
 
 private:
     Type type;
@@ -105,6 +112,7 @@ public:
 
     static CommandStrategyPointer create(std::string label);
     void generate();
+    void compile(AssemblerMenager* assemblerMenager);
 
 private:
     std::string label;

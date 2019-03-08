@@ -21,6 +21,7 @@ public:
 
     virtual RegisterPointer loadVariable(AssemblerMenager* assemblerMenager) = 0;
     virtual void storeVariable(AssemblerMenager* assemblerMenager, RegisterPointer saveRegister) = 0;
+    virtual bool isMustBeStoreNow() = 0;
 
     static bool compere(std::shared_ptr<Variable> leftVariable, std::shared_ptr<Variable> rightVariable);
 };
@@ -37,6 +38,7 @@ public:
 
     RegisterPointer loadVariable(AssemblerMenager* assemblerMenager);
     void storeVariable(AssemblerMenager* assemblerMenager, RegisterPointer saveRegister);
+    bool isMustBeStoreNow();
 
 private:
     std::string identifier;
@@ -53,6 +55,7 @@ public:
 
     RegisterPointer loadVariable(AssemblerMenager* assemblerMenager);
     void storeVariable(AssemblerMenager* assemblerMenager, RegisterPointer saveRegister);
+    bool isMustBeStoreNow();
 
 private:
     long long value;
@@ -68,6 +71,7 @@ public:
 
     RegisterPointer loadVariable(AssemblerMenager* assemblerMenager);
     void storeVariable(AssemblerMenager* assemblerMenager, RegisterPointer saveRegister);
+    bool isMustBeStoreNow();
 
 private:
     std::string identifier;
@@ -85,7 +89,8 @@ public:
 
     RegisterPointer loadVariable(AssemblerMenager* assemblerMenager);
     void storeVariable(AssemblerMenager* assemblerMenager, RegisterPointer saveRegister);
-
+    bool isMustBeStoreNow();
+    
 private:
     std::string identifier;
     VariablePointer arrayVariableIndex;
@@ -102,6 +107,7 @@ public:
 
     RegisterPointer loadVariable(AssemblerMenager* assemblerMenager);
     void storeVariable(AssemblerMenager* assemblerMenager, RegisterPointer saveRegister);
+    bool isMustBeStoreNow();
 };
 
 #endif 

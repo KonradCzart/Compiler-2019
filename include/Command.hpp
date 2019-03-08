@@ -10,6 +10,7 @@ public:
     Command(CommandStrategyPointer generatorAsm);
 
     void generate();
+    void compile(AssemblerMenager* assemblerMenager);
 
     void print();
 private:

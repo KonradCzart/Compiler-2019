@@ -48,6 +48,10 @@ void SimpleVariable::helpGenerateCommand(AssemblerMenager* assemblerMenager, Reg
     memory = nullptr;   
 }
 
+bool SimpleVariable::isMustBeStoreNow(){
+    return false;
+}
+
 ConstVariable::ConstVariable(long long value){
     this->value = value;
 }
@@ -76,6 +80,10 @@ void ConstVariable::storeVariable(AssemblerMenager* assemblerMenager, RegisterPo
     //We don't want save constants variable
 }
 
+bool ConstVariable::isMustBeStoreNow(){
+    return false;
+}
+
 ConstArrayVariable::ConstArrayVariable (std::string identifier, long long arrayIndex){
     this->identifier = identifier;
     this->arrayIndex = arrayIndex;
@@ -100,6 +108,10 @@ RegisterPointer ConstArrayVariable::loadVariable(AssemblerMenager* assemblerMena
 
 void ConstArrayVariable::storeVariable(AssemblerMenager* assemblerMenager, RegisterPointer saveRegister){
     helpGenerateCommand(assemblerMenager, saveRegister, AssemblerInstruction::Store);
+}
+
+bool ConstArrayVariable::isMustBeStoreNow(){
+    return true;
 }
 
 void ConstArrayVariable::helpGenerateCommand(AssemblerMenager* assemblerMenager, RegisterPointer currentRegister, AssemblerInstruction instruction){
@@ -160,6 +172,10 @@ void IdentifierArrayVariable::helpGenerateCommand(AssemblerMenager* assemblerMen
     memory = nullptr;    
 }
 
+bool IdentifierArrayVariable::isMustBeStoreNow(){
+    return true;
+}
+
 void TmpVariable::loadVariable(){
     std::cout << "Tmp: załadowano";
 }
@@ -182,3 +198,6 @@ void TmpVariable::storeVariable(AssemblerMenager* assemblerMenager, RegisterPoin
     //We don't want save tmp variable
 }
 
+bool TmpVariable::isMustBeStoreNow(){
+    return false;
+}

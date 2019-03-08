@@ -13,7 +13,7 @@
 
 #include <vector>
 void test();
-
+void test2();
 
 
 int
@@ -33,7 +33,7 @@ main( const int argc, const char **argv )
    driver.parse( argv[1] );
    driver.print( std::cout ) << "\n";
 
-   test();
+   test2();
    
    return( EXIT_SUCCESS );
 }
@@ -58,11 +58,28 @@ void test(){
    reg2->setVariable(var2);
    auto reg = var -> loadVariable(&menagerAsm);
    reg->setVariable(var);
-      auto reg4 = varTab -> loadVariable(&menagerAsm);
+   auto reg4 = varTab -> loadVariable(&menagerAsm);
    reg4->setVariable(varTab);
 
    std::ofstream fout("wynik");
    menagerAsm.printCompiledCode(fout);
 
+}
+
+void test2(){
+   MemoryTable* memory = MemoryTable::getInstance();
+   memory -> declare("a");
+   memory -> declare("b");
+   memory -> declare("c");
+   CommandBlock block;
+   VariablePointer varA = std::make_shared<SimpleVariable>("a");
+   VariablePointer varB = std::make_shared<SimpleVariable>("b");
+   VariablePointer varC = std::make_shared<SimpleVariable>("c");
+   block.addCommandToEnd(Command(SubtractionCommandStrategy::create(varA, varB, varA)));
+
+   AssemblerMenager menagerAsm (block);
+   menagerAsm.compileAll();
+   std::ofstream fout("wynik");
+   menagerAsm.printCompiledCode(fout);
 
 }

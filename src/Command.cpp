@@ -13,6 +13,10 @@ void Command::generate(){
     generatorAsm->generate();
 }
 
+void Command::compile(AssemblerMenager* assemblerMenager){
+    generatorAsm->compile(assemblerMenager);
+}
+
 void Command::print(){
     generatorAsm->generate();
 }
