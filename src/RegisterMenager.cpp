@@ -38,6 +38,7 @@ bool Register::isUsed(){
 
 void Register::setUsed(bool used){
     this->used = used;
+    usedTime = 0;
 }
 
 bool Register::isStore(){
@@ -151,6 +152,10 @@ RegisterPointer RegisterMenager::getLastUsedRegister(){
 
 AddressRegisterPointer RegisterMenager::getAddressRegister(){
     return addressRegister;
+}
+
+std::vector<RegisterPointer> RegisterMenager::getRegisterVector(){
+    return registerList;
 }
 
 void RegisterMenager::printRegisterAll(){

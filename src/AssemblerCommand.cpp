@@ -71,6 +71,14 @@ std::ostream& operator<<(std::ostream &strm, const AssemblerCommand &command){
     return strm;
 };
 
+std::string AssemblerCommand::getLabel(){
+    return label;
+}
+
 void AssemblerCommand::setJumpNumber(long long jumpNumber){
-    this->jumpNumber = jumpNumber;
+    this->jumpNumber=jumpNumber;
+}
+
+AssemblerInstruction AssemblerCommand::getInstruction(){
+    return instruction;
 }

@@ -1,5 +1,7 @@
 #include <sstream>
 #include "AssemblerMenager.hpp"
+#include <string.h>
+#include <map>
 
 AssemblerMenager::AssemblerMenager(CommandBlock block){
     blockToCompile = block;
@@ -8,8 +10,10 @@ AssemblerMenager::AssemblerMenager(CommandBlock block){
 void AssemblerMenager::compileAll(){
     auto commandsToCompile = blockToCompile.getCommands();
     for(auto command : commandsToCompile){
+      command.generate();
       command.compile(this);
     }
+    convertLabelToNumber();
 }
 
 std::ostream& AssemblerMenager::printCompiledCode(std::ostream &stream){
@@ -98,7 +102,7 @@ RegisterPointer AssemblerMenager::getRegisterForVariableWithoutLoad(VariablePoin
 
 RegisterPointer AssemblerMenager::getDifferentRegisterForVariable(VariablePointer variable, RegisterPointer diffrentRegister){
     RegisterPointer free = registerMenager.variableInRegister(variable);
-    if(free->getType() != diffrentRegister->getType()){
+    if(free->getType() == diffrentRegister->getType() && free -> getType() != RegisterType::X){
         RegisterPointer newFreeRegister = getFreeRegister();
         commands.push_back(AssemblerCommand(AssemblerInstruction::Copy, newFreeRegister->getType(), free->getType()));
         newFreeRegister->setVariable(variable);
@@ -150,7 +154,13 @@ AddressRegisterPointer AssemblerMenager::getAddressRegister(){
 }
 
 void AssemblerMenager::startNewBlock(){
-
+    for(auto currentRegister : registerMenager.getRegisterVector()){
+        if(currentRegister->isUsed()) {
+          saveValueRegister(currentRegister);
+        }
+    }
+    AddressRegisterPointer addressRegister = getAddressRegister();
+    addressRegister->setValue(addressRegister -> UNKNOW_VALUE);
 }
 
 void AssemblerMenager::clearRegister(){
@@ -250,4 +260,29 @@ std::vector<AssemblerCommand> AssemblerMenager::generateDivisionCommand(Register
   }
 
   return divCommands;
+}
+
+
+void AssemblerMenager::convertLabelToNumber(){
+    std::map<std::string, long long> labelMap;
+    std::vector<AssemblerCommand> newCommands;
+    long long i = 0;
+    for(auto command : commands){
+      if(command.getInstruction() == AssemblerInstruction::Label){
+        labelMap[command.getLabel()] = i;
+      }
+      else{
+        newCommands.push_back(command);
+        i++;
+      }
+    }
+    int k = 0;
+    for(auto command : newCommands){
+      if(command.getInstruction() == AssemblerInstruction::Jump || command.getInstruction() == AssemblerInstruction::Jzero || command.getInstruction() == AssemblerInstruction::Jodd){
+        newCommands[k].setJumpNumber(labelMap[command.getLabel()]);
+      }
+      k++;
+    }
+
+    commands = newCommands;
 }

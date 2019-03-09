@@ -79,6 +79,7 @@ public:
     RegisterPointer getLastUsedRegister();
     AddressRegisterPointer getAddressRegister();
 
+    std::vector<RegisterPointer> getRegisterVector();
     //debug
     void printRegisterAll();
 

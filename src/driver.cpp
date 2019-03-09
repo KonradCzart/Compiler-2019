@@ -9,6 +9,9 @@ Compiler::CompilerDriver::~CompilerDriver(){
    scanner = nullptr;
    delete(parser);
    parser = nullptr;
+   delete(assemblerMenager);
+   assemblerMenager = nullptr;
+   memory = nullptr;
 }
 
 void Compiler::CompilerDriver::parse( const char * const filename ){
@@ -59,6 +62,14 @@ void Compiler::CompilerDriver::parse_helper( std::istream &stream ){
 
 
 std::ostream& Compiler::CompilerDriver::print( std::ostream &stream ){
-   stream << "Results: " << "\n";
+   assemblerMenager->printCompiledCode(stream);
    return(stream);
+}
+
+bool Compiler::CompilerDriver::isFinishReadFile(){
+   return finishReadFile;
+}
+
+void Compiler::CompilerDriver::compaile(){
+   assemblerMenager->compileAll();
 }

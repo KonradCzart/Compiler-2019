@@ -192,6 +192,7 @@ void ModuloCommandStrategy::compile(AssemblerMenager* assemblerMenager){
         RegisterPointer secondHelpRegister = assemblerMenager->getFreeRegister();
         secondHelpRegister->setUsed(true);
 
+
         RegisterType resultType = registerResult->getType();
         RegisterType leftType = registerLeft->getType();
         RegisterType rightType = registerRight->getType();

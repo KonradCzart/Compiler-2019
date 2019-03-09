@@ -33,6 +33,7 @@ RegisterPointer SimpleVariable::loadVariable(AssemblerMenager* assemblerMenager)
 }
 
 void SimpleVariable::storeVariable(AssemblerMenager* assemblerMenager, RegisterPointer saveRegister){
+    loadVariable();
     helpGenerateCommand(assemblerMenager, saveRegister, AssemblerInstruction::Store); 
 }
 
@@ -40,7 +41,6 @@ void SimpleVariable::helpGenerateCommand(AssemblerMenager* assemblerMenager, Reg
     std::vector<AssemblerCommand> commands;
     MemoryTable* memory = MemoryTable::getInstance();
     long long memoryAddress = memory -> getAddress(identifier);
-
     commands = assemblerMenager -> generateAddress(memoryAddress);
     commands.push_back(AssemblerCommand(instruction, currentRegister->getType()));
     assemblerMenager -> insertAssemblerCommand(commands);
@@ -180,8 +180,15 @@ void TmpVariable::loadVariable(){
     std::cout << "Tmp: załadowano";
 }
 
+TmpVariable::TmpVariable (){
+    name = "EMPTY";
+}
+TmpVariable::TmpVariable (std::string name){
+    this->name = name;
+}
+
 std::string TmpVariable::print(){
-    std::string tmp = "TMP";
+    std::string tmp = "TMP_"+name;
     return tmp;
 }
 

@@ -71,13 +71,34 @@
 
 start
    : /*empty*/
-   | DECLARE declarations IN commands END { std::cout<<"dasdasda" << std::endl; $4.print(); }
+   | DECLARE declarations IN commands END { 
+         driver.memory->printAllMemory(); 
+         $4.addCommandToEnd(Command(CodeCommandStrategy::create(CodeCommandStrategy::HALT, "END_PROGRAM")));
+         driver.assemblerMenager = new AssemblerMenager($4);         
+         driver.finishReadFile = true;
+      }
    ;
 
 declarations
    : /*empty*/
-   | declarations PIDENTIFIER SEMICOLON
-   | declarations PIDENTIFIER LBR NUM COLON NUM RBR SEMICOLON
+   | declarations PIDENTIFIER SEMICOLON {
+         if(driver.memory->isAlreadyDeclared($2)){
+            //std::stringstream message;
+            //message << "Identifier " << $2 << " already exists.";
+            //Compiler::Parser::error(*(scanner.location), message.str()); return 1;
+         }
+         driver.memory->declare($2);
+      }
+   | declarations PIDENTIFIER LBR NUM COLON NUM RBR SEMICOLON {
+         if(driver.memory->isAlreadyDeclared($2)){
+            //std::stringstream message;
+            //message << "Identifier " << $2 << " already exists.";
+            //Compiler::Parser::error(*(scanner.location), message.str()); return 1;
+         }
+         long long firstIndex = stoll($4);
+         long long lastIndex = stoll($6);
+         driver.memory->declareArray($2, firstIndex, lastIndex);
+      }
    ;
 
 commands

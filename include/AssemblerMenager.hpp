@@ -40,5 +40,7 @@ private:
     std::vector<AssemblerCommand> commands;
     RegisterMenager registerMenager;
     LabelMenager labelMenager;
+
+    void convertLabelToNumber();
 };
 #endif

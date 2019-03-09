@@ -3,18 +3,18 @@
   1 0 0 0
 ]
 DECLARE
-	a; b; c;
+	a; b; c; w; g; h; i;
 IN
-	c := a + c ;
-	tab(10) := array(a) % w;
-
-	IF g != tab(p) THEN
-		READ a;
-	ENDIF
-
 	READ a;
 	READ b;
+	c := a + b;
+	d := c;
+	w := d;
+	READ g;
+	READ h;
+	READ i;
 	WRITE a;
+	WRITE b;
 	WRITE c;
 END
 

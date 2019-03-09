@@ -13,7 +13,7 @@ Condition::Condition(Condition::Type type, VariablePointer leftVariable, Variabl
 
 CommandBlock Condition::createCommandBlock(std::string labelJump){
     CommandBlock block;
-    VariablePointer tmpVariable = make_shared<TmpVariable>();
+    VariablePointer tmpVariable = make_shared<TmpVariable>("USED");
     std::string labelHelp1 = labelJump + "_HELP1";
     std::string labelHelp2 = labelJump + "_HELP2";
 
@@ -37,21 +37,21 @@ CommandBlock Condition::createCommandBlock(std::string labelJump){
             block.addCommandToEnd(JumpConditionCommandStrategy::create(JumpConditionCommandStrategy::Type::JZERO, tmpVariable, labelJump));
             block.addCommandToEnd(LabelCommandStrategy::create(labelHelp2));
             break;
-        case GREATER:
+        case LESSER:
             block.addCommandToEnd(SubtractionCommandStrategy::create(tmpVariable, rightVariable, leftVariable));
             block.addCommandToEnd(JumpConditionCommandStrategy::create(JumpConditionCommandStrategy::Type::JZERO, tmpVariable, labelJump));
             break;
-        case LESSER:
+        case GREATER:
             block.addCommandToEnd(SubtractionCommandStrategy::create(tmpVariable, leftVariable, rightVariable));
             block.addCommandToEnd(JumpConditionCommandStrategy::create(JumpConditionCommandStrategy::Type::JZERO, tmpVariable, labelJump));
             break;
-        case GREATER_EQUAL:
+        case LESSER_EQUAL:
             block.addCommandToEnd(AssignCommandStrategy::create(tmpVariable, rightVariable));
             block.addCommandToEnd(IncDecCommandStrategy::create(IncDecCommandStrategy::Type::INC, tmpVariable));
             block.addCommandToEnd(SubtractionCommandStrategy::create(tmpVariable, tmpVariable, leftVariable));
             block.addCommandToEnd(JumpConditionCommandStrategy::create(JumpConditionCommandStrategy::Type::JZERO, tmpVariable, labelJump));
             break;
-        case LESSER_EQUAL:
+        case GREATER_EQUAL:
             block.addCommandToEnd(AssignCommandStrategy::create(tmpVariable, leftVariable));
             block.addCommandToEnd(IncDecCommandStrategy::create(IncDecCommandStrategy::Type::INC, tmpVariable));
             block.addCommandToEnd(SubtractionCommandStrategy::create(tmpVariable, tmpVariable, rightVariable));

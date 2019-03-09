@@ -32,8 +32,11 @@ public:
     AssemblerCommand(AssemblerInstruction instruction, RegisterType firstRegister);
 
     friend ostream& operator <<(std::ostream &strm, const AssemblerCommand &command);
+    
+    std::string getLabel();
     void setJumpNumber(long long jumpNumber);
-
+    AssemblerInstruction getInstruction();
+    
 private:
     AssemblerInstruction instruction;
     RegisterType firstRegister;

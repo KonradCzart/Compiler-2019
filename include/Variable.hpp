@@ -99,7 +99,8 @@ private:
 
 class TmpVariable : public Variable{
 public:
-    TmpVariable () = default;
+    TmpVariable ();
+    TmpVariable (std::string name);
     ~TmpVariable () = default;
 
     void loadVariable();
@@ -108,6 +109,8 @@ public:
     RegisterPointer loadVariable(AssemblerMenager* assemblerMenager);
     void storeVariable(AssemblerMenager* assemblerMenager, RegisterPointer saveRegister);
     bool isMustBeStoreNow();
+private:
+    std::string name;
 };
 
 #endif 

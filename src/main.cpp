@@ -17,24 +17,16 @@ void test2();
 
 
 int
-main( const int argc, const char **argv )
-{
-   std::vector<int> a;
-   a.push_back(51);
-   a.push_back(48);
-
-   std::vector<int> b = a;
-   a.push_back(10);
-      for (int i=0; i<b.size(); i++) 
-       cout << b[i] << " "; 
-
-
+main( const int argc, const char **argv ){
    Compiler::CompilerDriver driver;
    driver.parse( argv[1] );
-   driver.print( std::cout ) << "\n";
+   if(driver.isFinishReadFile()){
+      driver.compaile();
+      std::ofstream fout(argv[2]);
+      driver.print( fout );
+      fout.close();
+   }
 
-   test2();
-   
    return( EXIT_SUCCESS );
 }
 

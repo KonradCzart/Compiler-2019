@@ -10,6 +10,7 @@
 #include "Variable.hpp"
 #include "MemoryTable.hpp"
 #include "CommandMenager.hpp"
+#include "AssemblerMenager.hpp"
 
 namespace Compiler{
 
@@ -25,12 +26,19 @@ public:
    void parse( std::istream &iss );
    std::ostream& print(std::ostream &stream);
 
+   bool isFinishReadFile();
+   void compaile();
+   
+
 private:
    void parse_helper( std::istream &stream );
 
    Compiler::Parser  *parser  = nullptr;
    Compiler::Scanner *scanner = nullptr;
    CommandMenager commandMenager;
+   MemoryTable* memory = MemoryTable::getInstance();
+   AssemblerMenager *assemblerMenager;
+   bool finishReadFile = false;
 };
 
 }

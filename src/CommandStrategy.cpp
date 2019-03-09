@@ -20,7 +20,8 @@ void AssignCommandStrategy::compile(AssemblerMenager* assemblerMenager){
     if(!Variable::compere(resultVariable, assignVariable)){
         RegisterPointer registerAssign = assemblerMenager->getRegisterForVariable(assignVariable);
         RegisterPointer registerResult = assemblerMenager->getRegisterForVariableWithoutLoad(resultVariable);
-
+        
+        registerResult->setStore(true);
         std::vector<AssemblerCommand> assignCommands;
         assignCommands.push_back(AssemblerCommand(AssemblerInstruction::Copy, registerResult->getType(), registerAssign->getType()));
 
@@ -54,6 +55,7 @@ void IOCommandStrategy::compile(AssemblerMenager* assemblerMenager){
     if(type == Type::READ){
         registerResult = assemblerMenager->getRegisterForVariableWithoutLoad(resultVariable);
         ioCommands.push_back(AssemblerCommand(AssemblerInstruction::Get, registerResult->getType()));
+        registerResult->setStore(true);
     }
     else if(type == Type::WRITE){
         registerResult = assemblerMenager->getRegisterForVariable(resultVariable);
