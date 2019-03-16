@@ -18,8 +18,8 @@ public:
    CommandBlock getCommandIfElse(Condition condition, CommandBlock& trueBlock, CommandBlock& falseBlock);
    CommandBlock getCommandWhileDo(Condition condition, CommandBlock& whileBlock);
    CommandBlock getCommandDoWhile(Condition condition, CommandBlock& whileBlock);
-   CommandBlock getCommandFor(VariablePointer iterator, VariablePointer fromVariablePointer, VariablePointer endVariablePointer, CommandBlock forBlock);
-   CommandBlock getCommandForDown(VariablePointer iterator, VariablePointer fromVariablePointer, VariablePointer endVariablePointer, CommandBlock forBlock);
+   CommandBlock getCommandFor(VariablePointer iterator, VariablePointer counter,  VariablePointer fromVariablePointer, VariablePointer endVariablePointer, CommandBlock forBlock);
+   CommandBlock getCommandForDown(VariablePointer iterator, VariablePointer counter, VariablePointer fromVariablePointer, VariablePointer endVariablePointer, CommandBlock forBlock);
 
 private:
    LabelMenager labelMenager;

@@ -7,6 +7,10 @@ AssemblerMenager::AssemblerMenager(CommandBlock block){
     blockToCompile = block;
 }
 
+void AssemblerMenager::setCommandBlock(CommandBlock block){
+  blockToCompile = block;
+}
+
 void AssemblerMenager::compileAll(){
     auto commandsToCompile = blockToCompile.getCommands();
     for(auto command : commandsToCompile){

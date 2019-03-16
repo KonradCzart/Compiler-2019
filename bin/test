@@ -1,20 +1,13 @@
-[ div-mod.imp 
-  1 0
-  1 0 0 0
-]
 DECLARE
-	a; b; c; w; g; h; i;
+	a; 
+b; 
 IN
-	READ a;
-	READ b;
-	c := a + b;
-	d := c;
-	w := d;
-	READ g;
-	READ h;
-	READ i;
-	WRITE a;
-	WRITE b;
-	WRITE c;
+	FOR i FROM 0 TO 10 DO
+		WRITE i;
+	ENDFOR
+
+	FOR i FROM 10 DOWNTO 0 DO
+		WRITE 2;
+	ENDFOR
 END
 

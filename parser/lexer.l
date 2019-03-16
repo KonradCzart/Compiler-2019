@@ -30,6 +30,7 @@ using token = Compiler::Parser::token;
 %%
 %{          /** Code executed at the beginning of yylex **/
             yylval = lval;
+            location = loc;
 %}
 "[" { BEGIN(COMMENT); }
 [0-9]+ 	    { yylval->build< std::string >( yytext ); return(token::NUM);}

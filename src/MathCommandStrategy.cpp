@@ -106,6 +106,7 @@ void MultiplicationCommandStrategy::compile(AssemblerMenager* assemblerMenager){
 
     std::vector<AssemblerCommand> mulAssemblerCommands = assemblerMenager->generateMultiplicationCommand(registerResult->getType(), registerLeft->getType(), registerRight->getType());
     assemblerMenager->insertAssemblerCommand(mulAssemblerCommands);
+    assemblerMenager->checkSpecyficVariableInRegister(registerResult);
     registerLeft->clearRegister();
     registerRight->clearRegister();
 }

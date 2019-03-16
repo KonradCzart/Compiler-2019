@@ -56,6 +56,13 @@ bool MemoryTable::isAlreadyDeclared(std::string identifier){
     return false;
 }
 
+bool MemoryTable::isArraySymbol(std::string identifier){
+  if(isAlreadyDeclared(identifier)){
+    return declaredSymbols[identifier].isArray;
+  }
+  return false;
+}
+
 void MemoryTable::initialize(std::string identifier){
     declaredSymbols.at(identifier).initialized = true;
 }

@@ -22,7 +22,8 @@ public:
     bool declare(std::string identifier);
     bool declareArray(std::string identifier, long long firstArrayIndex, long long lastArrayIndex);
     bool isAlreadyDeclared(std::string identifier);
-
+    bool isArraySymbol(std::string identifier);
+    
     void initialize(std::string identifier);
     bool isInitialized(std::string identifier);
 

@@ -11,6 +11,9 @@ class AssemblerMenager{
 public:
     AssemblerMenager() = default;
     AssemblerMenager(CommandBlock block);
+    ~AssemblerMenager() = default;
+
+    void setCommandBlock(CommandBlock block);
 
     void compileAll();
     std::ostream& printCompiledCode(std::ostream &stream);

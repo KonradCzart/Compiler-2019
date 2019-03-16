@@ -4,6 +4,7 @@
 %defines
 %define api.namespace {Compiler}
 %define parser_class_name {Parser}
+%define parse.error verbose
 
 %code requires{
    namespace Compiler {
@@ -17,6 +18,7 @@
    #include "Condition.hpp"
    #include "Command.hpp"
    #include "CommandStrategy.hpp" 
+
 }
 
 %parse-param { Scanner  &scanner  }
@@ -35,9 +37,13 @@
    #include "Condition.hpp"
    #include "Command.hpp"
    #include "CommandStrategy.hpp"
+   #include <sstream>
+
+   bool errorFlag = false;
 
 #undef yylex
 #define yylex scanner.yylex
+
 }
 
 %define api.value.type variant
@@ -72,32 +78,27 @@
 start
    : /*empty*/
    | DECLARE declarations IN commands END { 
-         driver.memory->printAllMemory(); 
-         $4.addCommandToEnd(Command(CodeCommandStrategy::create(CodeCommandStrategy::HALT, "END_PROGRAM")));
-         driver.assemblerMenager = new AssemblerMenager($4);         
-         driver.finishReadFile = true;
+         if(errorFlag){
+            return 1;
+         }
+         else {
+            driver.memory->printAllMemory(); 
+            $4.addCommandToEnd(Command(CodeCommandStrategy::create(CodeCommandStrategy::HALT, "END_PROGRAM")));
+            driver.assemblerMenager->setCommandBlock($4);  
+            driver.finishReadFile = true;
+         }
       }
    ;
 
 declarations
    : /*empty*/
    | declarations PIDENTIFIER SEMICOLON {
-         if(driver.memory->isAlreadyDeclared($2)){
-            //std::stringstream message;
-            //message << "Identifier " << $2 << " already exists.";
-            //Compiler::Parser::error(*(scanner.location), message.str()); return 1;
-         }
-         driver.memory->declare($2);
+         driver.declare($2);
       }
    | declarations PIDENTIFIER LBR NUM COLON NUM RBR SEMICOLON {
-         if(driver.memory->isAlreadyDeclared($2)){
-            //std::stringstream message;
-            //message << "Identifier " << $2 << " already exists.";
-            //Compiler::Parser::error(*(scanner.location), message.str()); return 1;
-         }
          long long firstIndex = stoll($4);
          long long lastIndex = stoll($6);
-         driver.memory->declareArray($2, firstIndex, lastIndex);
+         driver.declareArray($2, firstIndex, lastIndex);
       }
    ;
 
@@ -113,6 +114,8 @@ commands
 
 command
    : identifier ASSIGN expression SEMICOLON {
+         driver.checkModificationIterator($1);
+         driver.initialize($1);
          $$ = CommandBlock(Command($3.createCommand($1)));
       }
    | IF condition THEN commands ELSE commands ENDIF {
@@ -127,13 +130,29 @@ command
    | DO commands WHILE condition ENDDO {
          $$ = driver.commandMenager.getCommandDoWhile($4,$2);
       }
-   | FOR PIDENTIFIER FROM value TO value DO commands ENDFOR {
-
+   | FOR PIDENTIFIER FROM value TO value  {
+         driver.validateAndPushIterator($2);
       }
-   | FOR PIDENTIFIER FROM value DOWNTO value DO commands ENDFOR {
+      DO commands ENDFOR { 
+         VariablePointer iteratorVariable = driver.getIterator($2);
+         VariablePointer counterVariable = driver.getCounter($2);
 
+         driver.memory->popIterator();
+         $$ = driver.commandMenager.getCommandFor(iteratorVariable, counterVariable, $4, $6, $9);   
+      }
+   | FOR PIDENTIFIER FROM value DOWNTO value {
+         driver.validateAndPushIterator($2);
+      }
+      DO commands ENDFOR {
+         VariablePointer iteratorVariable = driver.getIterator($2);
+         VariablePointer counterVariable = driver.getCounter($2);
+
+         driver.memory->popIterator();
+         $$ = driver.commandMenager.getCommandForDown(iteratorVariable, counterVariable, $4, $6, $9);  
       }
    | READ identifier SEMICOLON {
+         driver.checkModificationIterator($2);
+         driver.initialize($2);
          $$ = CommandBlock(Command(IOCommandStrategy::create(IOCommandStrategy::Type::READ, $2)));
       }
    | WRITE value SEMICOLON {
@@ -164,20 +183,23 @@ value
          long long value = stoll($1);
          $$ = std::make_shared<ConstVariable>(value);
      }
-   | identifier { $$ = $1; }
+   | identifier { 
+         driver.checkInitialized($1);
+         $$ = $1; 
+      }
    ;
 
 identifier
    : PIDENTIFIER { 
-         $$ = std::make_shared<SimpleVariable>($1); 
+         $$ = driver.getDeclaredVariable($1);
       }
    | PIDENTIFIER LBR PIDENTIFIER RBR  {
-         VariablePointer var = std::make_shared<SimpleVariable>($3); 
-         $$ = std::make_shared<IdentifierArrayVariable>($1, var); 
+         VariablePointer indexArray = driver.getDeclaredVariable($3);
+         $$ = driver.getDeclaredArray($1, indexArray);
       }
    | PIDENTIFIER LBR NUM RBR {  
-         long long index = stoll($3);
-         $$ = std::make_shared<ConstArrayVariable>($1, index); 
+         long long indexArray = stoll($3);
+         $$ = driver.getDeclaredArray($1, indexArray);
       }
    ;
 
@@ -186,4 +208,5 @@ void
 Compiler::Parser::error( const location_type &l, const std::string &err_message )
 {
    std::cerr << "Error: " << err_message << " at " << l << "\n";
+   errorFlag = true;
 }

@@ -16,10 +16,9 @@ namespace Compiler{
 
 class CompilerDriver{
 public:
-   CompilerDriver() = default;
+   CompilerDriver();
    friend class Parser;
    friend class Scanner;
-   bool compiled = false;
    virtual ~CompilerDriver();
 
    void parse( const char * const filename );
@@ -29,6 +28,19 @@ public:
    bool isFinishReadFile();
    void compaile();
    
+   void declare(std::string identifier);
+   void declareArray(std::string identifier, long long firstIndex, long long lastIndex);
+
+   VariablePointer getDeclaredVariable(std::string identifier);
+   VariablePointer getDeclaredArray(std::string identifier, long long index);
+   VariablePointer getDeclaredArray(std::string identifier, VariablePointer variableIndex); 
+   VariablePointer getIterator(std::string identifier);
+   VariablePointer getCounter(std::string identifier);
+
+   void initialize(VariablePointer variable);
+   void checkInitialized(VariablePointer variable);
+   void checkModificationIterator(VariablePointer iterator);
+   void validateAndPushIterator(std::string identifier);
 
 private:
    void parse_helper( std::istream &stream );
@@ -39,6 +51,8 @@ private:
    MemoryTable* memory = MemoryTable::getInstance();
    AssemblerMenager *assemblerMenager;
    bool finishReadFile = false;
+
+   bool isCorrectDeclaredArray(std::string identifier);
 };
 
 }

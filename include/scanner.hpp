@@ -26,8 +26,7 @@ public:
    int yylex( Compiler::Parser::semantic_type * const lval,
               Compiler::Parser::location_type *location );
 
-
-
+   Compiler::Parser::location_type *location = nullptr;
 private:
    Compiler::Parser::semantic_type *yylval = nullptr;
 };

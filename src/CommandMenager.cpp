@@ -1,4 +1,5 @@
 #include "CommandMenager.hpp"
+#include "MathCommandStrategy.hpp"
 
 CommandBlock CommandMenager::getCommandIf(Condition condition, CommandBlock& ifBlock){
     CommandBlock resultBlock;
@@ -71,12 +72,51 @@ CommandBlock CommandMenager::getCommandDoWhile(Condition condition, CommandBlock
     return resultBlock;
 }
 
-CommandBlock CommandMenager::getCommandFor(VariablePointer iterator, VariablePointer fromVariable, VariablePointer endVariable, CommandBlock forBlock){
+CommandBlock CommandMenager::getCommandFor(VariablePointer iterator, VariablePointer counter, VariablePointer fromVariable, VariablePointer endVariable, CommandBlock forBlock){
     CommandBlock resultBlock;
+    std::string labelStart = labelMenager.getNextLabel("FOR");
+    std::string labelEnd = labelMenager.getLabel(labelStart, "END");
+    VariablePointer tmpVariable = make_shared<TmpVariable>("USED");
+    
+    resultBlock.addCommandToEnd(AssignCommandStrategy::create(iterator, fromVariable));
+    resultBlock.addCommandToEnd(AssignCommandStrategy::create(counter, endVariable));
+    resultBlock.addCommandToEnd(IncDecCommandStrategy::create(IncDecCommandStrategy::Type::INC, counter));
+    resultBlock.addCommandToEnd(CodeCommandStrategy::create(CodeCommandStrategy::Type::NEW_BLOCK, "FOR"));
+    resultBlock.addCommandToEnd(LabelCommandStrategy::create(labelStart));
+    resultBlock.addCommandToEnd(SubtractionCommandStrategy::create(tmpVariable, counter, iterator));
+    resultBlock.addCommandToEnd(JumpConditionCommandStrategy::create(JumpConditionCommandStrategy::Type::JZERO, tmpVariable, labelEnd));
+
+    resultBlock.append(forBlock);
+
+    resultBlock.addCommandToEnd(IncDecCommandStrategy::create(IncDecCommandStrategy::Type::INC, iterator));
+    resultBlock.addCommandToEnd(CodeCommandStrategy::create(CodeCommandStrategy::Type::NEW_BLOCK, "FOR_END"));
+
+    resultBlock.addCommandToEnd(JumpCommandStrategy::create(labelStart));
+    resultBlock.addCommandToEnd(LabelCommandStrategy::create(labelEnd));
+
     return resultBlock;
 }
 
-CommandBlock CommandMenager::getCommandForDown(VariablePointer iterator, VariablePointer fromVariable, VariablePointer endVariable, CommandBlock forBlock){
+CommandBlock CommandMenager::getCommandForDown(VariablePointer iterator, VariablePointer counter, VariablePointer fromVariable, VariablePointer endVariable, CommandBlock forBlock){
     CommandBlock resultBlock;
+    std::string labelStart = labelMenager.getNextLabel("FOR_DOWN");
+    std::string labelEnd = labelMenager.getLabel(labelStart, "END");
+    VariablePointer tmpVariable = make_shared<TmpVariable>("USED");
+    
+    resultBlock.addCommandToEnd(AssignCommandStrategy::create(iterator, fromVariable));
+    resultBlock.addCommandToEnd(AssignCommandStrategy::create(counter, endVariable));
+    resultBlock.addCommandToEnd(IncDecCommandStrategy::create(IncDecCommandStrategy::Type::INC, iterator));
+    resultBlock.addCommandToEnd(CodeCommandStrategy::create(CodeCommandStrategy::Type::NEW_BLOCK, "FOR_DOWN"));
+    resultBlock.addCommandToEnd(LabelCommandStrategy::create(labelStart));
+
+    resultBlock.addCommandToEnd(SubtractionCommandStrategy::create(tmpVariable, iterator, counter));
+    resultBlock.addCommandToEnd(JumpConditionCommandStrategy::create(JumpConditionCommandStrategy::Type::JZERO, tmpVariable, labelEnd));
+    resultBlock.addCommandToEnd(IncDecCommandStrategy::create(IncDecCommandStrategy::Type::DEC, iterator));
+
+    resultBlock.append(forBlock);
+    resultBlock.addCommandToEnd(CodeCommandStrategy::create(CodeCommandStrategy::Type::NEW_BLOCK, "FOR_END"));
+    resultBlock.addCommandToEnd(JumpCommandStrategy::create(labelStart));
+    resultBlock.addCommandToEnd(LabelCommandStrategy::create(labelEnd));
+
     return resultBlock;
 }

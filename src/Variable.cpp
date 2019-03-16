@@ -17,8 +17,8 @@ SimpleVariable::SimpleVariable(std::string identifier){
     this->identifier = identifier;
 }
 
-void SimpleVariable::loadVariable(){
-    std::cout << "Zwykła zmienna: " << identifier << std::endl;
+std::string SimpleVariable::getIdentifier(){
+    return identifier;
 }
 
 std::string SimpleVariable::print(){
@@ -33,7 +33,6 @@ RegisterPointer SimpleVariable::loadVariable(AssemblerMenager* assemblerMenager)
 }
 
 void SimpleVariable::storeVariable(AssemblerMenager* assemblerMenager, RegisterPointer saveRegister){
-    loadVariable();
     helpGenerateCommand(assemblerMenager, saveRegister, AssemblerInstruction::Store); 
 }
 
@@ -56,8 +55,8 @@ ConstVariable::ConstVariable(long long value){
     this->value = value;
 }
 
-void ConstVariable::loadVariable(){
-    std::cout << "Stała: " << value << std::endl;
+std::string ConstVariable::getIdentifier(){
+    return print();
 }
 
 std::string ConstVariable::print(){
@@ -89,8 +88,8 @@ ConstArrayVariable::ConstArrayVariable (std::string identifier, long long arrayI
     this->arrayIndex = arrayIndex;
 }
 
-void ConstArrayVariable::loadVariable(){
-    std::cout << "Tablica: " << identifier << " index " << arrayIndex << std::endl;
+std::string ConstArrayVariable::getIdentifier(){
+    return identifier;
 }
 
 std::string ConstArrayVariable::print(){
@@ -133,9 +132,8 @@ IdentifierArrayVariable::IdentifierArrayVariable (std::string identifier, Variab
     this->arrayVariableIndex = arrayVariableIndex;
 }
 
-void IdentifierArrayVariable::loadVariable(){
-    std::cout << "Tablica: " << identifier << " index ";
-    arrayVariableIndex->loadVariable();
+std::string IdentifierArrayVariable::getIdentifier(){
+    return identifier;
 }
 
 std::string IdentifierArrayVariable::print(){
@@ -176,20 +174,20 @@ bool IdentifierArrayVariable::isMustBeStoreNow(){
     return true;
 }
 
-void TmpVariable::loadVariable(){
-    std::cout << "Tmp: załadowano";
-}
-
 TmpVariable::TmpVariable (){
-    name = "EMPTY";
+    identifier = "EMPTY";
 }
 TmpVariable::TmpVariable (std::string name){
-    this->name = name;
+    this->identifier = name;
 }
 
 std::string TmpVariable::print(){
-    std::string tmp = "TMP_"+name;
+    std::string tmp = "TMP_"+identifier;
     return tmp;
+}
+
+std::string TmpVariable::getIdentifier(){
+    return print();
 }
 
 RegisterPointer TmpVariable::loadVariable(AssemblerMenager* assemblerMenager){

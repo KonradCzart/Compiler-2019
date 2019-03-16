@@ -16,7 +16,7 @@ public:
     Variable() {}
     virtual ~Variable(){}
 
-    virtual void loadVariable() = 0;
+    virtual std::string getIdentifier() = 0;
     virtual std::string print() = 0;
 
     virtual RegisterPointer loadVariable(AssemblerMenager* assemblerMenager) = 0;
@@ -33,7 +33,7 @@ public:
     SimpleVariable(std::string identifier);
     ~SimpleVariable() = default;
 
-    void loadVariable();
+    std::string getIdentifier();
     std::string print();
 
     RegisterPointer loadVariable(AssemblerMenager* assemblerMenager);
@@ -50,7 +50,7 @@ public:
     ConstVariable(long long value);
     ~ConstVariable() = default;
 
-    void loadVariable();
+    std::string getIdentifier();
     std::string print();
 
     RegisterPointer loadVariable(AssemblerMenager* assemblerMenager);
@@ -66,7 +66,7 @@ public:
     ConstArrayVariable (std::string identifier, long long arrayIndex);
     ~ConstArrayVariable () = default;
 
-    void loadVariable();
+    std::string getIdentifier();
     std::string print();
 
     RegisterPointer loadVariable(AssemblerMenager* assemblerMenager);
@@ -84,13 +84,13 @@ public:
     IdentifierArrayVariable (std::string identifier, VariablePointer arrayVariableIndex);
     ~IdentifierArrayVariable () = default;
 
-    void loadVariable();
+    std::string getIdentifier();
     std::string print();
 
     RegisterPointer loadVariable(AssemblerMenager* assemblerMenager);
     void storeVariable(AssemblerMenager* assemblerMenager, RegisterPointer saveRegister);
     bool isMustBeStoreNow();
-    
+
 private:
     std::string identifier;
     VariablePointer arrayVariableIndex;
@@ -103,14 +103,14 @@ public:
     TmpVariable (std::string name);
     ~TmpVariable () = default;
 
-    void loadVariable();
+    std::string getIdentifier();
     std::string print();
 
     RegisterPointer loadVariable(AssemblerMenager* assemblerMenager);
     void storeVariable(AssemblerMenager* assemblerMenager, RegisterPointer saveRegister);
     bool isMustBeStoreNow();
 private:
-    std::string name;
+    std::string identifier;
 };
 
-#endif 
+#endif
