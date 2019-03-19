@@ -9,10 +9,7 @@ public:
     Command();
     Command(CommandStrategyPointer generatorAsm);
 
-    void generate();
     void compile(AssemblerMenager* assemblerMenager);
-
-    void print();
 private:
     CommandStrategyPointer generatorAsm;
 };
@@ -29,8 +26,6 @@ public:
     void append(CommandBlock& block);
     void appendToBegin(CommandBlock& block);
     std::vector<Command> getCommands();
-
-    void print();
 private:
     std::vector<Command> commands;
 };

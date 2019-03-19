@@ -22,8 +22,6 @@ public:
     VariablePointer getLeftVariable();
     VariablePointer getRightVariable();
     Type getType();
-
-    void print();
 private:
     Type type;
     VariablePointer leftVariable;

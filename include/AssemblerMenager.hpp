@@ -34,7 +34,6 @@ public:
     AddressRegisterPointer getAddressRegister();
     void checkSpecyficVariableInRegister(RegisterPointer register);
     void startNewBlock();
-    void clearRegister();
 
     std::vector<AssemblerCommand> generateDivisionCommand(RegisterType result, RegisterType left, RegisterType right, RegisterType help1, RegisterType help2, bool mod);
     std::vector<AssemblerCommand> generateMultiplicationCommand(RegisterType result, RegisterType left, RegisterType right);

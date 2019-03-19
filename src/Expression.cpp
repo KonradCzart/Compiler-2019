@@ -47,30 +47,3 @@ Command Expression::createCommand(VariablePointer resultVariable){
     }
     return Command(commandTypeStrategy);
 }
-
-void Expression::print(){
-    std::string symbolType = " ";
-    switch (type) {
-        case ADDITION:
-            symbolType =  "ADD ";
-            break;
-        case MULTIPLICATION:
-            symbolType =  "MUL ";
-            break;
-        case SUBTRACTION:
-            symbolType =  "SUB ";
-            break;
-        case DIVISION:
-            symbolType =  "DIV ";
-            break;
-        case MODULO:
-            symbolType =  "MOD ";
-            break;
-        case EMPTY:
-            symbolType =  "";
-            break;
-    }
-
-    symbolType = symbolType + leftVariable -> print() + " " + rightVariable -> print();
-    std::cout << symbolType << std::endl;
-}

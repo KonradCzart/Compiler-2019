@@ -9,16 +9,8 @@ Command::Command(CommandStrategyPointer generatorAsm){
     this->generatorAsm = generatorAsm;
 }
 
-void Command::generate(){
-    generatorAsm->generate();
-}
-
 void Command::compile(AssemblerMenager* assemblerMenager){
     generatorAsm->compile(assemblerMenager);
-}
-
-void Command::print(){
-    generatorAsm->generate();
 }
 
 CommandBlock::CommandBlock(){}
@@ -55,10 +47,4 @@ void CommandBlock::appendToBegin(CommandBlock& block){
 
 std::vector<Command> CommandBlock::getCommands(){
     return commands;
-}
-
-void CommandBlock::print(){
-    for(auto com : commands){
-        com.print();
-    }
 }

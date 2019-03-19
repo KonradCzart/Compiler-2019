@@ -8,7 +8,6 @@ class MathCommandStrategy : public CommandStrategy {
 public:
     MathCommandStrategy(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable);
 
-    virtual void generate() = 0;
     virtual void compile(AssemblerMenager* assemblerMenager) = 0;
 
 protected:
@@ -22,7 +21,6 @@ public:
     AdditionCommandStrategy(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable);
 
     static CommandStrategyPointer create(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable);
-    void generate();
     void compile(AssemblerMenager* assemblerMenager);
 };
 
@@ -31,7 +29,6 @@ public:
     SubtractionCommandStrategy(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable);
     
     static CommandStrategyPointer create(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable);
-    void generate();
     void compile(AssemblerMenager* assemblerMenager);
 };
 
@@ -40,7 +37,6 @@ public:
     MultiplicationCommandStrategy(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable);
 
     static CommandStrategyPointer create(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable);
-    void generate();
     void compile(AssemblerMenager* assemblerMenager);
 };
 
@@ -49,7 +45,6 @@ public:
     DivisionCommandStrategy(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable);
 
     static CommandStrategyPointer create(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable);
-    void generate();
     void compile(AssemblerMenager* assemblerMenager);
 };
 
@@ -58,7 +53,6 @@ public:
     ModuloCommandStrategy(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable);
 
     static CommandStrategyPointer create(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable);
-    void generate();
     void compile(AssemblerMenager* assemblerMenager);
 };
 

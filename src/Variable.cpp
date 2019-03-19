@@ -7,7 +7,7 @@
 #include "MemoryTable.hpp"
 
 bool Variable::compere(VariablePointer leftVariable, VariablePointer rightVariable){
-    if(leftVariable->print() == rightVariable->print()){
+    if(leftVariable->toString() == rightVariable->toString()){
         return true;
     }
     return false;
@@ -21,7 +21,7 @@ std::string SimpleVariable::getIdentifier(){
     return identifier;
 }
 
-std::string SimpleVariable::print(){
+std::string SimpleVariable::toString(){
     return identifier;
 }
 
@@ -56,10 +56,10 @@ ConstVariable::ConstVariable(long long value){
 }
 
 std::string ConstVariable::getIdentifier(){
-    return print();
+    return toString();
 }
 
-std::string ConstVariable::print(){
+std::string ConstVariable::toString(){
     std::stringstream tmp;
     tmp << value;
     return tmp.str();
@@ -92,7 +92,7 @@ std::string ConstArrayVariable::getIdentifier(){
     return identifier;
 }
 
-std::string ConstArrayVariable::print(){
+std::string ConstArrayVariable::toString(){
     std::stringstream tmp;
     tmp << arrayIndex;
     return identifier + "[" + tmp.str() + "]";
@@ -136,8 +136,8 @@ std::string IdentifierArrayVariable::getIdentifier(){
     return identifier;
 }
 
-std::string IdentifierArrayVariable::print(){
-    return identifier + "[" + arrayVariableIndex->print() + "]";
+std::string IdentifierArrayVariable::toString(){
+    return identifier + "[" + arrayVariableIndex->toString() + "]";
 }
 
 RegisterPointer IdentifierArrayVariable::loadVariable(AssemblerMenager* assemblerMenager){
@@ -181,13 +181,13 @@ TmpVariable::TmpVariable (std::string name){
     this->identifier = name;
 }
 
-std::string TmpVariable::print(){
+std::string TmpVariable::toString(){
     std::string tmp = "TMP_"+identifier;
     return tmp;
 }
 
 std::string TmpVariable::getIdentifier(){
-    return print();
+    return toString();
 }
 
 RegisterPointer TmpVariable::loadVariable(AssemblerMenager* assemblerMenager){

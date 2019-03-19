@@ -82,7 +82,6 @@ start
             return 1;
          }
          else {
-            driver.memory->printAllMemory(); 
             $4.addCommandToEnd(Command(CodeCommandStrategy::create(CodeCommandStrategy::HALT, "END_PROGRAM")));
             driver.assemblerMenager->setCommandBlock($4);  
             driver.finishReadFile = true;

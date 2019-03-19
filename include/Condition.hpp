@@ -19,7 +19,6 @@ public:
     Condition(Type type, VariablePointer leftVariable, VariablePointer rightVariable);
 
     CommandBlock createCommandBlock(std::string labelJump);
-    void print();
 private:
     Type type;
     VariablePointer leftVariable;

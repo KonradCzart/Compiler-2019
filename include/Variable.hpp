@@ -17,7 +17,7 @@ public:
     virtual ~Variable(){}
 
     virtual std::string getIdentifier() = 0;
-    virtual std::string print() = 0;
+    virtual std::string toString() = 0;
 
     virtual RegisterPointer loadVariable(AssemblerMenager* assemblerMenager) = 0;
     virtual void storeVariable(AssemblerMenager* assemblerMenager, RegisterPointer saveRegister) = 0;
@@ -34,7 +34,7 @@ public:
     ~SimpleVariable() = default;
 
     std::string getIdentifier();
-    std::string print();
+    std::string toString();
 
     RegisterPointer loadVariable(AssemblerMenager* assemblerMenager);
     void storeVariable(AssemblerMenager* assemblerMenager, RegisterPointer saveRegister);
@@ -51,7 +51,7 @@ public:
     ~ConstVariable() = default;
 
     std::string getIdentifier();
-    std::string print();
+    std::string toString();
 
     RegisterPointer loadVariable(AssemblerMenager* assemblerMenager);
     void storeVariable(AssemblerMenager* assemblerMenager, RegisterPointer saveRegister);
@@ -67,7 +67,7 @@ public:
     ~ConstArrayVariable () = default;
 
     std::string getIdentifier();
-    std::string print();
+    std::string toString();
 
     RegisterPointer loadVariable(AssemblerMenager* assemblerMenager);
     void storeVariable(AssemblerMenager* assemblerMenager, RegisterPointer saveRegister);
@@ -85,7 +85,7 @@ public:
     ~IdentifierArrayVariable () = default;
 
     std::string getIdentifier();
-    std::string print();
+    std::string toString();
 
     RegisterPointer loadVariable(AssemblerMenager* assemblerMenager);
     void storeVariable(AssemblerMenager* assemblerMenager, RegisterPointer saveRegister);
@@ -104,7 +104,7 @@ public:
     ~TmpVariable () = default;
 
     std::string getIdentifier();
-    std::string print();
+    std::string toString();
 
     RegisterPointer loadVariable(AssemblerMenager* assemblerMenager);
     void storeVariable(AssemblerMenager* assemblerMenager, RegisterPointer saveRegister);

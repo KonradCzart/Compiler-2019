@@ -16,10 +16,6 @@ CommandStrategyPointer AdditionCommandStrategy::create(VariablePointer resultVar
     return make_shared<AdditionCommandStrategy>(resultVariable, leftVariable, rightVariable);
 }
 
-void AdditionCommandStrategy::generate(){
-    std::cout << "ADD: " + resultVariable->print() + " " + leftVariable->print() + " " + rightVariable->print() << std::endl;
-}
-
 void AdditionCommandStrategy::compile(AssemblerMenager* assemblerMenager){
     RegisterPointer registerLeft = assemblerMenager->getRegisterForVariable(leftVariable);
     RegisterPointer registerRight = assemblerMenager->getRegisterForVariable(rightVariable);
@@ -50,10 +46,6 @@ SubtractionCommandStrategy::SubtractionCommandStrategy(VariablePointer resultVar
 
 CommandStrategyPointer SubtractionCommandStrategy::create(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable){
     return make_shared<SubtractionCommandStrategy>(resultVariable, leftVariable, rightVariable);
-}
-
-void SubtractionCommandStrategy::generate(){
-    std::cout << "SUB: " + resultVariable->print() + " " + leftVariable->print() + " " + rightVariable->print() << std::endl;
 }
 
 void SubtractionCommandStrategy::compile(AssemblerMenager* assemblerMenager){
@@ -91,10 +83,6 @@ CommandStrategyPointer MultiplicationCommandStrategy::create(VariablePointer res
     return make_shared<MultiplicationCommandStrategy>(resultVariable, leftVariable, rightVariable);
 }
 
-void MultiplicationCommandStrategy::generate(){
-    std::cout << "MUL: " + resultVariable->print() + " " + leftVariable->print() + " " + rightVariable->print() << std::endl;
-}
-
 void MultiplicationCommandStrategy::compile(AssemblerMenager* assemblerMenager){
     RegisterPointer registerLeft = assemblerMenager->getRegisterForVariable(leftVariable);
     RegisterPointer registerRight = assemblerMenager->getDifferentRegisterForVariable(rightVariable, registerLeft);
@@ -116,10 +104,6 @@ DivisionCommandStrategy::DivisionCommandStrategy(VariablePointer resultVariable,
 
 CommandStrategyPointer DivisionCommandStrategy::create(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable){
     return make_shared<DivisionCommandStrategy>(resultVariable, leftVariable, rightVariable);
-}
-
-void DivisionCommandStrategy::generate(){
-    std::cout << "DIV: " + resultVariable->print() + " " + leftVariable->print() + " " + rightVariable->print() << std::endl;
 }
 
 void DivisionCommandStrategy::compile(AssemblerMenager* assemblerMenager){ 
@@ -166,10 +150,6 @@ ModuloCommandStrategy::ModuloCommandStrategy(VariablePointer resultVariable, Var
 
 CommandStrategyPointer ModuloCommandStrategy::create(VariablePointer resultVariable, VariablePointer leftVariable, VariablePointer rightVariable){
     return make_shared<ModuloCommandStrategy>(resultVariable, leftVariable, rightVariable);
-}
-
-void ModuloCommandStrategy::generate(){
-    std::cout << "MOD: " + resultVariable->print() + " " + leftVariable->print() + " " + rightVariable->print() << std::endl;
 }
 
 void ModuloCommandStrategy::compile(AssemblerMenager* assemblerMenager){

@@ -70,7 +70,7 @@ void Register::incrementUsedTime(){
 
 void Register::printRegister(){
 
-    std::cout << type << "   " << usedTime << "   " << variable->print() << std::endl;
+    std::cout << type << "   " << usedTime << "   " << variable->toString() << std::endl;
 }
 
 AddressRegister::AddressRegister (){

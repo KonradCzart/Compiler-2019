@@ -5,7 +5,6 @@
 
 class CommandStrategy {
 public:
-    virtual void generate() = 0;
     virtual void compile(AssemblerMenager* assemblerMenager) = 0;
 };
 
@@ -16,7 +15,6 @@ public:
     AssignCommandStrategy(VariablePointer resultVariable, VariablePointer assignVariable);
 
     static CommandStrategyPointer create(VariablePointer resultVariable, VariablePointer assignVariable);
-    void generate();
     void compile(AssemblerMenager* assemblerMenager);
 
 private:
@@ -34,7 +32,6 @@ public:
     IOCommandStrategy(Type type, VariablePointer resultVariable);
 
     static CommandStrategyPointer create(Type type, VariablePointer resultVariable);
-    void generate();
     void compile(AssemblerMenager* assemblerMenager);
 
 private:
@@ -47,7 +44,6 @@ public:
     JumpCommandStrategy(std::string label);
 
     static CommandStrategyPointer create(std::string label);
-    void generate();
     void compile(AssemblerMenager* assemblerMenager);
 
 private:
@@ -63,7 +59,6 @@ public:
     JumpConditionCommandStrategy(Type type, VariablePointer conditionVariable, std::string label);
 
     static CommandStrategyPointer create(Type type, VariablePointer conditionVariable, std::string label);
-    void generate();
     void compile(AssemblerMenager* assemblerMenager);
 
 private:
@@ -81,7 +76,6 @@ public:
     IncDecCommandStrategy(Type type, VariablePointer resultVariable);
 
     static CommandStrategyPointer create(Type type, VariablePointer resultVariable);
-    void generate();
     void compile(AssemblerMenager* assemblerMenager);
 
 private:
@@ -98,7 +92,6 @@ public:
     CodeCommandStrategy(Type type, std::string label);
 
     static CommandStrategyPointer create(Type type, std::string label);
-    void generate();
     void compile(AssemblerMenager* assemblerMenager);
 
 private:
@@ -111,7 +104,6 @@ public:
     LabelCommandStrategy(std::string label);
 
     static CommandStrategyPointer create(std::string label);
-    void generate();
     void compile(AssemblerMenager* assemblerMenager);
 
 private:

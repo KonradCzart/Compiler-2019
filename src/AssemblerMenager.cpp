@@ -14,7 +14,6 @@ void AssemblerMenager::setCommandBlock(CommandBlock block){
 void AssemblerMenager::compileAll(){
     auto commandsToCompile = blockToCompile.getCommands();
     for(auto command : commandsToCompile){
-      command.generate();
       command.compile(this);
     }
     convertLabelToNumber();
@@ -24,7 +23,6 @@ std::ostream& AssemblerMenager::printCompiledCode(std::ostream &stream){
     for(auto com : commands){
         stream << com << std::endl;
     }
-    registerMenager.printRegisterAll();
     return(stream);
 }
 
@@ -165,10 +163,6 @@ void AssemblerMenager::startNewBlock(){
     }
     AddressRegisterPointer addressRegister = getAddressRegister();
     addressRegister->setValue(addressRegister -> UNKNOW_VALUE);
-}
-
-void AssemblerMenager::clearRegister(){
-
 }
 
 void AssemblerMenager::insertAssemblerCommand(std::vector<AssemblerCommand>& assemblerCommands){
